@@ -1,0 +1,13 @@
+#connect-pane {
+  width: 420px;
+}
+
+#token-input-row {
+  padding: 8px;
+}
+
+#connect-button-row {
+  padding: 8px;
+  display: flex;
+  place-content: center;
+}
