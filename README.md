@@ -17,7 +17,7 @@ Before running `npm install @motherduckdb/wasm-client` in your project, add the 
 //npm.pkg.github.com/:_authToken=<TOKEN>
 ```
 
-Replace `<TOKEN>` with a GitHub personal access token. For details on how to generate a token, see [Managing your Personal Access Tokens](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens), [Authenticating to GitHub Packages](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry#authenticating-to-github-packages), and [Authenticating with a Personal Access Token](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry#authenticating-with-a-personal-access-token). 
+Replace `<TOKEN>` with a GitHub personal access token. This token should have at least `read:packages`. For details on how to generate a token, see [Managing your Personal Access Tokens](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens), [Authenticating to GitHub Packages](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry#authenticating-to-github-packages), and [Authenticating with a Personal Access Token](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry#authenticating-with-a-personal-access-token). 
 
 (If you don't already have an `.npmrc` file, create one next to the `package.json` file for your project.)
 
