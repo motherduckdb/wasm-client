@@ -1,5 +1,5 @@
-import { useCallback, useState } from "react";
-import "./ConnectPane.css";
+import { useCallback, useState } from 'react';
+import './ConnectPane.css';
 
 export function ConnectPane({
   connected,

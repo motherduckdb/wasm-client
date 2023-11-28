@@ -1,5 +1,5 @@
-import "./Header.css";
-import motherDuckLogo from "./assets/motherduck_logo.svg";
+import './Header.css';
+import motherDuckLogo from './assets/motherduck_logo.svg';
 
 export function Header() {
   return (
