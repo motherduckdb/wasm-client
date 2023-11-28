@@ -1,20 +1,23 @@
-import { useState } from 'react';
+import { coordinator, wasmConnector } from '@uwdata/vgplot';
+import { useCallback, useState } from 'react';
 import './App.css';
+import { ChartsPane } from './ChartsPane';
 import { ConnectPane } from './ConnectPane';
 import { Header } from './Header';
 
 export function App() {
-  const [token, setToken] = useState<string | null>(null);
+  const [connected, setConnected] = useState<boolean>(false);
+  const connect = useCallback(async (token: string) => {
+    token;
+    coordinator().databaseConnector(await wasmConnector());
+    setConnected(true);
+  }, []);
 
   return (
     <>
       <Header />
       <div id="content-pane">
-        {!token ? (
-          <ConnectPane connected={!!token} connect={setToken} />
-        ) : (
-          'Content goes here'
-        )}
+        {!connected ? <ConnectPane connect={connect} /> : <ChartsPane />}
       </div>
     </>
   );

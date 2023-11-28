@@ -1,18 +1,15 @@
 import { useCallback, useState } from 'react';
 import './ConnectPane.css';
 
-export function ConnectPane({
-  connected,
-  connect,
-}: {
-  connected: boolean;
-  connect: (token: string) => void;
-}) {
+export function ConnectPane({ connect }: { connect: (token: string) => void }) {
   const [token, setToken] = useState<string | null>(null);
 
-  const handleTokenInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setToken(e.target.value)
-  }, []);
+  const handleTokenInputChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setToken(e.target.value);
+    },
+    []
+  );
 
   const handleConnectButtonClick = useCallback(() => {
     if (token) {
@@ -33,7 +30,7 @@ export function ConnectPane({
       <div id="connect-button-row">
         <button
           id="connect-button"
-          disabled={connected || !token}
+          disabled={!token}
           onClick={handleConnectButtonClick}
         >
           Connect
