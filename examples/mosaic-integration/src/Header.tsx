@@ -9,9 +9,7 @@ export function Header() {
           <img src={motherDuckLogo} alt="MotherDuck logo" />
         </a>
       </div>
-      <div id="subtitle">
-        WASM Client Example: Mosaic Integration
-      </div>
+      <div id="subtitle">WASM Client Example: Mosaic Integration</div>
     </div>
   );
 }
