@@ -41,7 +41,7 @@ export function ChartsPane() {
           onChange={handlePlotNameChange}
         >
           {plotNames.map((plotName) => (
-            <option>{plotName}</option>
+            <option key={plotName}>{plotName}</option>
           ))}
         </select>
       </div>
