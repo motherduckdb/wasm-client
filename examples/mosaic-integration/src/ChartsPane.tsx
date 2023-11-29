@@ -9,7 +9,7 @@ type Plot = {
 
 const plotMap: Record<string, Plot> = {
   'Mark Types': markTypes,
-  Primes: primes,
+  'Primes': primes,
 };
 const plotNames = Object.keys(plotMap);
 
