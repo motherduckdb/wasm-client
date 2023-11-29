@@ -9,9 +9,7 @@ export async function loadData() {
 }
 
 export function render() {
-  return (
-    vg.plot(
-      vg.barY(vg.from('primes'), { x: 'i', y: 'p', fill: 'steelblue' })
-    )
+  return vg.plot(
+    vg.barY(vg.from('primes'), { x: 'i', y: 'p', fill: 'steelblue' })
   );
 }

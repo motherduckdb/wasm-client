@@ -5,20 +5,23 @@ import { markTypes, primes } from './plots';
 type Plot = {
   loadData(): Promise<void>;
   render(): Element;
-}
+};
 
 const plotMap: Record<string, Plot> = {
   'Mark Types': markTypes,
-  'Primes': primes
+  Primes: primes,
 };
 const plotNames = Object.keys(plotMap);
 
 export function ChartsPane() {
   const [plotPane, setPlotPane] = useState<HTMLDivElement | null>(null);
   const [plotName, setPlotName] = useState<string>(plotNames[0]);
-  const handlePlotNameChange = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
-    setPlotName(e.target.value);
-  }, []);
+  const handlePlotNameChange = useCallback(
+    (e: React.ChangeEvent<HTMLSelectElement>) => {
+      setPlotName(e.target.value);
+    },
+    []
+  );
   useEffect(() => {
     (async () => {
       if (plotPane) {
@@ -32,8 +35,14 @@ export function ChartsPane() {
   return (
     <div id="charts-pane">
       <div id="selector-pane">
-        <select id="plot-selector" value={plotName} onChange={handlePlotNameChange}>
-          {plotNames.map(plotName => <option>{plotName}</option>)}
+        <select
+          id="plot-selector"
+          value={plotName}
+          onChange={handlePlotNameChange}
+        >
+          {plotNames.map((plotName) => (
+            <option>{plotName}</option>
+          ))}
         </select>
       </div>
       <div id="plot-pane" ref={setPlotPane}></div>
