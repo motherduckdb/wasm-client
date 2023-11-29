@@ -4,6 +4,16 @@
   flex-direction: column;
 }
 
+#selector-pane {
+  display: flex;
+  place-content: center;
+  padding: 8px;
+}
+
+#plot-selector {
+  padding: 4px 8px;
+}
+
 #plot-pane {
   display: flex;
   place-content: center;

@@ -1,9 +1,9 @@
-declare module "@uwdata/vgplot" {
+declare module '@uwdata/vgplot' {
   // core
 
   interface Query {
     sql: string;
-    type: "exec" | "arrow" | "json";
+    type: 'exec' | 'arrow' | 'json';
   }
 
   interface Connector {
@@ -23,15 +23,59 @@ declare module "@uwdata/vgplot" {
 
   function wasmConnector(options?: WASMConnectorOptions): Promise<Connector>;
 
+  // sql
+
+  class AggregateFunction {}
+
+  function count(...args: unknown[]): AggregateFunction;
+
+  function loadObjects(
+    tableName: string,
+    data: { [key: string]: unknown }[],
+    options?: { replace?: boolean; temp?: boolean; view?: boolean }
+  ): string;
+
   // vgplot
 
   class Plot {}
 
   type Directive = (plot: Plot) => void;
 
+  function plot(...directives: Directive[]): Element;
+
+  // attributes
+  function colorScheme(value: string): Directive;
+  function height(value: number): Directive;
+  function margins(value: {
+    left: number;
+    top: number;
+    right: number;
+    bottom: number;
+  }): Directive;
+  function width(value: number): Directive;
+  function xAxis(value: 'top' | 'bottom' | null): Directive;
+  function xDomain(value: [number, number]): Directive;
+  function yAxis(value: 'left' | 'right' | null): Directive;
+  function yDomain(value: [number, number]): Directive;
+
+  // data
   function from(table: unknown, options?: unknown): unknown;
 
+  // marks
+  function areaY(...args: unknown[]): Directive;
   function barY(...args: unknown[]): Directive;
+  function contour(...args: unknown[]): Directive;
+  function denseLine(...args: unknown[]): Directive;
+  function dot(...args: unknown[]): Directive;
+  function hexbin(...args: unknown[]): Directive;
+  function hexgrid(...args: unknown[]): Directive;
+  function lineY(...args: unknown[]): Directive;
+  function raster(...args: unknown[]): Directive;
+  function regressionY(...args: unknown[]): Directive;
+  function text(...args: unknown[]): Directive;
+  function tickY(...args: unknown[]): Directive;
 
-  function plot(...directives: Directive[]): Element;
+  // layout
+  function hconcat(...elements: Element[]): Element;
+  function vconcat(...elements: Element[]): Element;
 }
