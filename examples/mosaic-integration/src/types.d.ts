@@ -52,11 +52,18 @@ declare module '@uwdata/vgplot' {
     right: number;
     bottom: number;
   }): Directive;
+  function marginLeft(value: number): Directive;
   function width(value: number): Directive;
+  
   function xAxis(value: 'top' | 'bottom' | null): Directive;
   function xDomain(value: [number, number]): Directive;
+  function xGrid(value: boolean): Directive;
+  function xTickFormat(value: string): Directive;
+
   function yAxis(value: 'left' | 'right' | null): Directive;
   function yDomain(value: [number, number]): Directive;
+  function yGrid(value: boolean): Directive;
+  function yTickFormat(value: string): Directive;
 
   // data
   function from(table: unknown, options?: unknown): unknown;
