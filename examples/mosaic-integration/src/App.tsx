@@ -1,7 +1,7 @@
 import { coordinator } from '@uwdata/vgplot';
 import { useCallback, useState } from 'react';
 import './App.css';
-import { ChartsPane } from './ChartsPane';
+import { VizzesPane } from './VizzesPane';
 import { ConnectPane } from './ConnectPane';
 import { Header } from './Header';
 import { mdConnector } from './mdConnector';
@@ -17,7 +17,7 @@ export function App() {
     <>
       <Header />
       <div id="content-pane">
-        {!connected ? <ConnectPane connect={connect} /> : <ChartsPane />}
+        {!connected ? <ConnectPane connect={connect} /> : <VizzesPane />}
       </div>
     </>
   );

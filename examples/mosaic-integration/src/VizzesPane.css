@@ -1,4 +1,4 @@
-#charts-pane {
+#vizzes-pane {
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -10,11 +10,11 @@
   padding: 8px;
 }
 
-#plot-selector {
+#viz-selector {
   padding: 4px 8px;
 }
 
-#plot-pane {
+#viz-pane {
   display: flex;
   place-content: center;
 }
