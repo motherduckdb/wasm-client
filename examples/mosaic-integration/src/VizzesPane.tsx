@@ -4,8 +4,8 @@ import './VizzesPane.css';
 import { NYPDComplaintsViz, MarkTypesViz } from './vizzes';
 
 const vizMap: Record<string, Viz> = {
-  'NYPD Complaints': new NYPDComplaintsViz(),
   'Mark Types': new MarkTypesViz(),
+  'NYPD Complaints': new NYPDComplaintsViz(),
 };
 const vizNames = Object.keys(vizMap);
 

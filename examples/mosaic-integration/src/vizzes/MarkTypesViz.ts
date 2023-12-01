@@ -1,6 +1,14 @@
 import * as vg from '@uwdata/vgplot';
 import { Viz } from '../Viz';
 
+// From https://uwdata.github.io/mosaic/examples/mark-types.html
+
+// By default, this viz uses local data.
+// To use a MotherDuck share, first attach the mosaic_examples share by running the following:
+// ATTACH 'md:_share/mosaic_examples/b01cfda8-239e-4148-a228-054b94cdc3b4';
+// Then, set this to `true`.
+const useShare = false;
+
 const defaultAttributes = [
   vg.xAxis(null),
   vg.yAxis(null),
@@ -10,16 +18,11 @@ const defaultAttributes = [
   vg.yDomain([0, 9]),
 ];
 
-// Requires the mosaic_examples share to be attached.
-// Run the following to attach it:
-// ATTACH 'md:_share/mosaic_examples/b01cfda8-239e-4148-a228-054b94cdc3b4';
-const useShare = true;
-
 export class MarkTypesViz implements Viz {
   async initialize() {
     if (useShare) {
       // Copy the necessary data from the remote mosaic_examples share to a local temp table to improve performance of subsequent queries.
-      await vg.coordinator().exec('create or replace temp table md as select * from mosaic_examples.main.md');
+      await vg.coordinator().exec('create or replace temp table md as select * from mosaic_examplesx.main.md');
     } else {
       // Create the necessary data in a local temp table from scratch.
       await vg.coordinator().exec(
