@@ -6,6 +6,19 @@ declare module '@uwdata/vgplot' {
     type: 'exec' | 'arrow' | 'json';
   }
 
+
+  class AsyncDispatch {
+    addEventListener(type: unknown, callback: (...args: unknown[]) => unknown);
+  }
+
+  class Param extends AsyncDispatch {
+  }
+
+  class Selection extends Param {
+    static single(): Selection;
+    value: unknown;
+  }
+
   interface Connector {
     query(query: Query): Promise<unknown>;
   }
@@ -34,6 +47,17 @@ declare module '@uwdata/vgplot' {
     data: { [key: string]: unknown }[],
     options?: { replace?: boolean; temp?: boolean; view?: boolean }
   ): string;
+
+  // inputs
+
+  interface TableOptions {
+    from: string; // Other types possible
+    filterBy: Selection;
+    width: number | { [column: string]: number };
+    height: number;
+  }
+
+  function table(options: TableOptions): Element
 
   // vgplot
 
@@ -67,6 +91,10 @@ declare module '@uwdata/vgplot' {
 
   // data
   function from(table: unknown, options?: unknown): unknown;
+
+  // interactors
+  function highlight(...args: unknown[]): Directive;
+  function toggleX(...args: unknown[]): Directive;
 
   // marks
   function areaY(...args: unknown[]): Directive;
