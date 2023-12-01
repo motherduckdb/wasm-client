@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import './ChartsPane.css';
-import { markTypes, primes } from './plots';
+import { complaints, markTypes, primes } from './plots';
 
 type Plot = {
   loadData(): Promise<void>;
@@ -8,6 +8,7 @@ type Plot = {
 };
 
 const plotMap: Record<string, Plot> = {
+  'Complaints': complaints,
   'Mark Types': markTypes,
   'Primes': primes,
 };
