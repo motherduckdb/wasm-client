@@ -1,9 +1,9 @@
 import { coordinator } from '@uwdata/vgplot';
 import { useCallback, useState } from 'react';
 import './App.css';
-import { VizzesPane } from './VizzesPane';
 import { ConnectPane } from './ConnectPane';
 import { Header } from './Header';
+import { VizzesPane } from './VizzesPane';
 import { mdConnector } from './mdConnector';
 
 export function App() {

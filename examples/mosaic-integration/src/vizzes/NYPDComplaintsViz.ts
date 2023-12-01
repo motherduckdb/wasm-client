@@ -31,31 +31,29 @@ export class NYPDComplaintsViz implements Viz {
 
   render(): Element {
     const $yearSelection = vg.Selection.single();
-    return (
-      vg.vconcat(
-        vg.plot(
-          vg.barY(vg.from('complaints'), {
-            x: 'Year',
-            y: 'Complaints',
-            fill: 'steelblue',
-          }),
-          vg.highlight({ by: $yearSelection }),
-          vg.toggleX({ as: $yearSelection }),
-          vg.xTickFormat('d'),
-          vg.yGrid(true),
-          vg.yTickFormat('s'),
-        ),
-        vg.table({
-          from: 'complaints_details',
-          filterBy: $yearSelection,
-          width: {
-            Year: 80,
-            Type: 400,
-            Complaints: 100
-          },
-          height: 400,
-        })
-      )
+    return vg.vconcat(
+      vg.plot(
+        vg.barY(vg.from('complaints'), {
+          x: 'Year',
+          y: 'Complaints',
+          fill: 'steelblue',
+        }),
+        vg.highlight({ by: $yearSelection }),
+        vg.toggleX({ as: $yearSelection }),
+        vg.xTickFormat('d'),
+        vg.yGrid(true),
+        vg.yTickFormat('s')
+      ),
+      vg.table({
+        from: 'complaints_details',
+        filterBy: $yearSelection,
+        width: {
+          Year: 80,
+          Type: 400,
+          Complaints: 100,
+        },
+        height: 400,
+      })
     );
   }
 }

@@ -22,7 +22,11 @@ export class MarkTypesViz implements Viz {
   async initialize() {
     if (useShare) {
       // Copy the necessary data from the remote mosaic_examples share to a local temp table to improve performance of subsequent queries.
-      await vg.coordinator().exec('create or replace temp table md as select * from mosaic_examplesx.main.md');
+      await vg
+        .coordinator()
+        .exec(
+          'create or replace temp table md as select * from mosaic_examplesx.main.md'
+        );
     } else {
       // Create the necessary data in a local temp table from scratch.
       await vg.coordinator().exec(

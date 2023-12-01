@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Viz } from './Viz';
 import './VizzesPane.css';
-import { NYPDComplaintsViz, MarkTypesViz } from './vizzes';
+import { MarkTypesViz, NYPDComplaintsViz } from './vizzes';
 
 const vizMap: Record<string, Viz> = {
   'Mark Types': new MarkTypesViz(),
