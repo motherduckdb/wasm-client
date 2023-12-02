@@ -1,0 +1,41 @@
+import { useCallback, useState } from 'react';
+import './ConnectPane.css';
+
+export function ConnectPane({ connect }: { connect: (token: string) => void }) {
+  const [token, setToken] = useState<string | null>(null);
+
+  const handleTokenInputChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setToken(e.target.value);
+    },
+    []
+  );
+
+  const handleConnectButtonClick = useCallback(() => {
+    if (token) {
+      connect(token);
+    }
+  }, [connect, token]);
+
+  return (
+    <div id="connect-pane">
+      <div id="token-input-row">
+        <input
+          id="token-input"
+          type="password"
+          placeholder="Paste MotherDuck Service Token Here"
+          onChange={handleTokenInputChange}
+        />
+      </div>
+      <div id="connect-button-row">
+        <button
+          id="connect-button"
+          disabled={!token}
+          onClick={handleConnectButtonClick}
+        >
+          Connect
+        </button>
+      </div>
+    </div>
+  );
+}

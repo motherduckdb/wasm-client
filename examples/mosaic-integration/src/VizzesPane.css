@@ -1,0 +1,20 @@
+#vizzes-pane {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+#selector-pane {
+  display: flex;
+  place-content: center;
+  padding: 8px;
+}
+
+#viz-selector {
+  padding: 4px 8px;
+}
+
+#viz-pane {
+  display: flex;
+  place-content: center;
+}

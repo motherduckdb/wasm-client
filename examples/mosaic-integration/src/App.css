@@ -1,0 +1,6 @@
+#content-pane {
+  flex: 1;
+  display: flex;
+  place-content: center;
+  padding: 12px;
+}

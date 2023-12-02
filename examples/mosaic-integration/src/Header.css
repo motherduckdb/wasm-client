@@ -1,0 +1,17 @@
+#header {
+  display: flex;
+  flex-direction: column;
+  place-content: center;
+  padding: 12px;
+}
+
+#title {
+  display: flex;
+  place-content: center;
+}
+
+#subtitle {
+  display: flex;
+  place-content: center;
+  color: gray;
+}

@@ -1,0 +1,25 @@
+#connect-pane {
+  display: flex;
+  flex-direction: column;
+}
+
+#token-input-row {
+  padding: 8px;
+  display: flex;
+  place-content: center;
+}
+
+#token-input {
+  width: 600px;
+  padding: 8px 12px;
+}
+
+#connect-button-row {
+  padding: 8px;
+  display: flex;
+  place-content: center;
+}
+
+#connect-button {
+  padding: 8px 12px;
+}
