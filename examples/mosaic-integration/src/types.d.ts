@@ -53,6 +53,7 @@ declare module '@uwdata/vgplot' {
   interface TableOptions {
     from: string; // Other types possible
     filterBy: Selection;
+    format: { [column: string]: unknown };
     width: number | { [column: string]: number };
     height: number;
   }
