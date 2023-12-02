@@ -47,6 +47,9 @@ export class NYPDComplaintsViz implements Viz {
       vg.table({
         from: 'complaints_details',
         filterBy: $yearSelection,
+        format: {
+          Year: (year: number) => String(year)
+        },
         width: {
           Year: 80,
           Type: 400,
