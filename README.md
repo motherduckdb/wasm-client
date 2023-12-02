@@ -38,6 +38,24 @@ You can check whether your application is in this mode by examining the [crossOr
 
 Note that applications in this mode are restricted in [some](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Opener-Policy#same-origin) [ways](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Embedder-Policy#require-corp). In particular, resources from different origins can only be loaded if they are served with a [Cross-Origin-Resource-Policy (CORS)](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cross-Origin-Resource-Policy) header with the value `cross-origin`.
 
+## Dependencies
+
+The MotherDuck WASM Client library depends on `apache-arrow` as a peer dependency.
+If you use `npm` version 7 or later to install `@motherduckdb/wasm-client`, then `apache-arrow` will automatically be installed, if it is not already.
+
+If you already have `apache-arrow` installed, then `@motherduckdb/wasm-client` will use it, as long as it is a compatible version (`^14.0.x` at the time of this writing).
+
+Optionally, you can use a variant of `@motherduckdb/wasm-client` that bundles `apache-arrow` instead of relying on it as a peer dependency.
+Don't use this option if you are using `apache-arrow` elsewhere in your application, because different copies of this library don't work together.
+To use this version, change your imports to:
+```ts
+import '@motherduckdb/wasm-client/with-arrow';
+```
+instead of:
+```ts
+import '@motherduckdb/wasm-client';
+```
+
 ## Usage
 
 The MotherDuck WASM Client library is written in TypeScript and exposes full TypeScript type definitions. These instructions assume you are using it from TypeScript.
@@ -97,6 +115,8 @@ connection.evaluateQuery(sql).then((result) => {
 });
 ```
 
+See [Results](#results) below for the structure of the result object.
+
 ### Prepared Statements
 
 To evaluate a [prepared](https://duckdb.org/docs/api/c/prepared) [statement](https://duckdb.org/docs/api/wasm/query#prepared-statements), call the `evaluatePreparedStatement` method:
@@ -128,9 +148,19 @@ The result promise of a canceled query will be rejected with and error message. 
 const queryWasCanceled = await connection.cancelQuery(queryId, 'custom error message');
 ```
 
+### Streaming Results
+
+The query methods above return fully materialized results. To evalute a query and return a stream of results, use `evaluateStreamingQuery` or `evaluateStreamingPreparedStatement`:
+
+```ts
+const result = await connection.evaluateStreamingQuery(sql);
+```
+
+See [Results](#results) below for the structure of the result object.
+
 ### Error Handling
 
-The query result promises returned by `evaluateQuery`, `evaluatePreparedStatement`, and `evaluateQueuedQuery` will be rejected in the case of an error.
+The query result promises returned by `evaluateQuery`, `evaluatePreparedStatement`, `evaluateQueuedQuery`, and `evaluateStreamingQuery` will be rejected in the case of an error.
 
 For convenience, "safe" variants of these three method are provided that catch this error and always resolve to a value indicating success or failure. For example:
 
@@ -145,22 +175,36 @@ if (result.status === 'success') {
 
 ### Results
 
-A successful query result contains a `rows` property, which is an array of row objects.
+A successful query result may either be fully materialized, or it may contain a stream.
 
+Use the `type` property of the result object, which is either `'materialized'` or `'streaming'`, to distinguish these.
+
+#### Materialized Results
+
+A materialized result contains a `rows` property, which is an array of row objects.
 Each row object has one property per column, named after that column. (Multiple columns with the same name are not currently supported.)
-
 The type of each column property of a row object depends on the type of the corresponding column in DuckDB.
 
 Many values are converted to a JavaScript primitive type, such as `boolean`, `number`, or `string`.
-
 Some numeric values too large to fit in a JavaScript `number` (e.g a DuckDB [BIGINT](https://duckdb.org/docs/sql/data_types/numeric#integer-types)) are converted to a JavaScript `bigint`.
-
 Values may also be JavaScript arrays or objects, for nested types such as DuckDB [LIST](https://duckdb.org/docs/sql/data_types/list) or [MAP](https://duckdb.org/docs/sql/data_types/map).
-
 Some DuckDB types, such as [DATE](https://duckdb.org/docs/sql/data_types/date), [TIME](https://duckdb.org/docs/sql/data_types/time), [TIMESTAMP](https://duckdb.org/docs/sql/data_types/timestamp), and [DECIMAL](https://duckdb.org/docs/sql/data_types/numeric#fixed-point-decimals), are converted to JavaScript objects implementing an interface specific to that type.
 
 These objects all implement `toString` to return a string representation identical to DuckDB's string conversion (e.g. using [CAST](https://duckdb.org/docs/sql/expressions/cast.html) to VARCHAR).
-
 They also have properties exposing the underlying value. For example, the object for a DuckDB TIME has a `microseconds` property (of type `bigint`). See the TypeScript type definitions for details.
 
 Note that these result types differ from those returned by DuckDB WASM without the MotherDuck WASM Client library. The MotherDuck WASM Client library implements custom conversion logic to preserve the full range of some types.
+
+#### Streaming Results
+
+A streaming result contains a `streamReader` property, which provides access to the underlying Arrow RecordBatch stream reader.
+This stream reader implements the async iterator protocol, and also has convenience methods such as `readAll` to materialize all batches.
+This can be useful if you need the underlying Arrow representation.
+
+Note, however, that Arrow performs sometimes lossy conversion of the underlying data to JavaScript types for certain DuckDB types, especially dates, times, and decimals.
+Also, converting Arrow values to strings will not always match DuckDB's string conversion.
+
+Finally, note that results of remote queries are not streamed end-to-end yet.
+Results of remote queries are fully materialized on the client upstream of this API.
+So the first batch will not be returned from this API until all results have been received by the client.
+End-to-end streaming of remote query results is on our roadmap.
