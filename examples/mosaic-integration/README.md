@@ -2,6 +2,8 @@
 
 An example integrating the MotherDuck WASM Client library with [Mosaic](https://uwdata.github.io/mosaic/) to produce interactive visualizations.
 
+![Screenshot of Mosaic NYPD Complaints example](docs/mosaic-nypd-complaints.png)
+
 ## Usage
 
 Install dependencies and run the dev server:
