@@ -8,7 +8,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@motherduckdb/wasm-client": "^0.1.0",
+    "@motherduckdb/wasm-client": "^0.2.0",
     "@tremor/react": "^3.10.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
