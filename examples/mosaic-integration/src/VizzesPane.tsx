@@ -2,10 +2,13 @@ import { useCallback, useEffect, useState } from 'react';
 import { Viz } from './Viz';
 import './VizzesPane.css';
 import { MarkTypesViz, NYPDComplaintsViz } from './vizzes';
+import { FlightsViz } from './vizzes/FlightsViz';
 
 const vizMap: Record<string, Viz> = {
   'Mark Types': new MarkTypesViz(),
   'NYPD Complaints': new NYPDComplaintsViz(),
+  'Flights 200K': new FlightsViz('flights_200k'),
+  'Flights 10M': new FlightsViz('flights_10m'),
 };
 const vizNames = Object.keys(vizMap);
 
@@ -22,6 +25,7 @@ export function VizzesPane() {
     (async () => {
       if (vizPane) {
         const viz = vizMap[currentVizName];
+        vizPane.innerHTML = 'Loading, please wait…';
         await viz.initialize();
         vizPane.innerHTML = '';
         vizPane.appendChild(viz.render());

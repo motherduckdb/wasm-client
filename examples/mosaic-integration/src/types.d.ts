@@ -15,6 +15,7 @@ declare module '@uwdata/vgplot' {
   }
 
   class Selection extends Param {
+    static crossfilter(): Selection;
     static single(): Selection;
     value: unknown;
   }
@@ -62,6 +63,8 @@ declare module '@uwdata/vgplot' {
 
   // vgplot
 
+  const Fixed: symbol;
+
   class Plot {}
 
   type Directive = (plot: Plot) => void;
@@ -81,12 +84,12 @@ declare module '@uwdata/vgplot' {
   function width(value: number): Directive;
   
   function xAxis(value: 'top' | 'bottom' | null): Directive;
-  function xDomain(value: [number, number]): Directive;
+  function xDomain(value: [number, number] | symbol): Directive;
   function xGrid(value: boolean): Directive;
   function xTickFormat(value: string): Directive;
 
   function yAxis(value: 'left' | 'right' | null): Directive;
-  function yDomain(value: [number, number]): Directive;
+  function yDomain(value: [number, number] | symbol): Directive;
   function yGrid(value: boolean): Directive;
   function yTickFormat(value: string): Directive;
 
@@ -95,6 +98,7 @@ declare module '@uwdata/vgplot' {
 
   // interactors
   function highlight(...args: unknown[]): Directive;
+  function intervalX(...args: unknown[]): Directive;
   function toggleX(...args: unknown[]): Directive;
 
   // marks
@@ -107,6 +111,9 @@ declare module '@uwdata/vgplot' {
   function hexgrid(...args: unknown[]): Directive;
   function lineY(...args: unknown[]): Directive;
   function raster(...args: unknown[]): Directive;
+  function rect(...args: unknown[]): Directive;
+  function rectX(...args: unknown[]): Directive;
+  function rectY(...args: unknown[]): Directive;
   function regressionY(...args: unknown[]): Directive;
   function text(...args: unknown[]): Directive;
   function tickY(...args: unknown[]): Directive;
@@ -114,4 +121,7 @@ declare module '@uwdata/vgplot' {
   // layout
   function hconcat(...elements: Element[]): Element;
   function vconcat(...elements: Element[]): Element;
+  
+  // transforms
+  function bin(field: string): unknown
 }
