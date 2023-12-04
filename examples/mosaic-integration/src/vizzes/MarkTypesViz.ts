@@ -25,7 +25,7 @@ export class MarkTypesViz implements Viz {
       await vg
         .coordinator()
         .exec(
-          'create or replace temp table md as select * from mosaic_examplesx.main.md'
+          'create temp table if not exists md as select * from mosaic_examples.main.md'
         );
     } else {
       // Create the necessary data in a local temp table from scratch.

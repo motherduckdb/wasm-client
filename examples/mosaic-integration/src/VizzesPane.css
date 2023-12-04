@@ -17,4 +17,5 @@
 #viz-pane {
   display: flex;
   place-content: center;
+  color: gray;
 }
