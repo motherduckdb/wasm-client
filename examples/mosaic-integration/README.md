@@ -2,7 +2,9 @@
 
 An example integrating the MotherDuck WASM Client library with [Mosaic](https://uwdata.github.io/mosaic/) to produce interactive visualizations.
 
-![Screenshot of Mosaic NYPD Complaints example](docs/mosaic-nypd-complaints.png)
+[Try the live demo!](https://motherduckdb.github.io/wasm-client/mosaic-integration/)
+
+<img src="docs/mosaic-nypd-complaints.png" alt="Screenshot of Mosaic NYPD Complaints example" width="600px">
 
 ## Usage
 
@@ -28,10 +30,16 @@ The "Mark Types" example reproduces the [Mosaic example](https://uwdata.github.i
 The "NYPD Complaints" example implements a Mosaic version of the [MotherDuck WASM Client example](../nypd-complaints/README.md) of the same name. It similarly depends on the `sample_data` database automatically attached to MotherDuck accounts. If your account does not have this database, you can reattach it by running:
 
 ```sql
-attach 'md:_share/sample_data/23b0d623-1361-421d-ae77-62d701d471e6';
+ATTACH 'md:_share/sample_data/23b0d623-1361-421d-ae77-62d701d471e6';
 ```
 
-This example demonstrates using MotherDuck's hybrid execution to materialize remote data into temporary local tables to improve interactive performance. See the `initialize` method in [NYPDComplaintsViz.ts](src/vizzes/NYPDComplaintsViz.ts).
+The "Flights" examples (both 200K and 10M row versions) reproduce the similarly-named [Mosaic](https://uwdata.github.io/mosaic/examples/flights-200k.html) [examples](https://uwdata.github.io/mosaic/examples/flights-10m.html). They both depend on access to a MotherDuck share. To attach this share to your account, run:
+
+```sql
+ATTACH 'md:_share/mosaic_examples/b01cfda8-239e-4148-a228-054b94cdc3b4';
+```
+
+These example demonstrate using MotherDuck's hybrid execution to materialize remote data into temporary local tables to improve interactive performance. See, for example, the `initialize` method in [NYPDComplaintsViz.ts](src/vizzes/NYPDComplaintsViz.ts).
 
 ## Implementation
 
