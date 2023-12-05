@@ -2,6 +2,7 @@
   flex: 1;
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
 
 #selector-pane {
@@ -12,10 +13,26 @@
 
 #viz-selector {
   padding: 4px 8px;
+  border-radius: 4px;
 }
 
 #viz-pane {
   display: flex;
   place-content: center;
   color: gray;
+}
+
+#help-pane {
+  display: flex;
+  flex-direction: column;
+  place-content: center;
+  margin-top: 24px;
+  padding: 12px;
+  border: 1px solid black;
+  border-radius: 4px;
+  background-color: orange;
+}
+
+.code {
+  font-family: monospace;
 }
