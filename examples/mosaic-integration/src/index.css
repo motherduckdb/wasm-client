@@ -7,6 +7,7 @@ body {
   left: 0;
   right: 0;
   display: flex;
+  line-height: 1.5em;
 }
 
 #root {
