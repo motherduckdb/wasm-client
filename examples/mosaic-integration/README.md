@@ -33,7 +33,7 @@ The "NYPD Complaints" example implements a Mosaic version of the [MotherDuck WAS
 ATTACH 'md:_share/sample_data/23b0d623-1361-421d-ae77-62d701d471e6';
 ```
 
-The "Flights" examples (both 200K and 10M row versions) reproduce the similarly-named [Mosaic](https://uwdata.github.io/mosaic/examples/flights-200k.html) [examples](https://uwdata.github.io/mosaic/examples/flights-10m.html). They both depend on access to a MotherDuck share. To attach this share to your account, run:
+The "Flights" (both 200K and 10M row versions), "Earthquakes", "Gaia Star Catalog" and "Seattle Weather" examples reproduce the similarly-named Mosaic examples, see: [Cross-Filter Flights (200K)](https://uwdata.github.io/mosaic/examples/flights-200k.html), [Cross-Filter Flights (10M)](https://uwdata.github.io/mosaic/examples/flights-10m.html), [Earthquakes](https://uwdata.github.io/mosaic/examples/earthquakes.html), [Gaia Star Catalog](https://uwdata.github.io/mosaic/examples/gaia.html) and [Seattle Weather](https://uwdata.github.io/mosaic/examples/weather.html). They all depend on access to a MotherDuck share. To attach this share to your account, run:
 
 ```sql
 ATTACH 'md:_share/mosaic_examples/b01cfda8-239e-4148-a228-054b94cdc3b4';

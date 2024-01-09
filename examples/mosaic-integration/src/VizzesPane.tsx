@@ -1,14 +1,17 @@
 import { useCallback, useEffect, useState } from 'react';
 import { Viz } from './Viz';
 import './VizzesPane.css';
-import { MarkTypesViz, NYPDComplaintsViz } from './vizzes';
+import { MarkTypesViz, NYPDComplaintsViz, GaiaStarCatalogViz, EarthquakeViz, SeattleWeatherViz } from './vizzes';
 import { FlightsViz } from './vizzes/FlightsViz';
 
 const vizMap: Record<string, Viz> = {
   'Mark Types': new MarkTypesViz(),
   'NYPD Complaints': new NYPDComplaintsViz(),
+  'Earthquakes': new EarthquakeViz(),
+  'Seattle Weather': new SeattleWeatherViz(),
   'Flights 200K': new FlightsViz('flights_200k'),
   'Flights 10M': new FlightsViz('flights_10m'),
+  'Gaia Star Catalog': new GaiaStarCatalogViz(),
 };
 const vizNames = Object.keys(vizMap);
 
