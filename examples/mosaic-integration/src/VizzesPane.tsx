@@ -9,7 +9,7 @@ const vizMap: Record<string, Viz> = {
   'NYPD Complaints': new NYPDComplaintsViz(),
   'Gaia Star Catalog': new GaiaStarCatalogViz(),
   'Earthquakes': new EarthquakeViz(),
-  'Seattle weather': new SeattleWeatherViz(),
+  'Seattle Weather': new SeattleWeatherViz(),
   'Flights 200K': new FlightsViz('flights_200k'),
   'Flights 10M': new FlightsViz('flights_10m'),
 };

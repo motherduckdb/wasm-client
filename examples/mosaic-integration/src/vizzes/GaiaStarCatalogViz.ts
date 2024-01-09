@@ -3,7 +3,7 @@ import { Viz } from '../Viz';
 
 // Requires the MotherDuck sample_data database to be present.
 // It is automatically shared to all new MotherDuck accounts, but if you've detached it you can get it back with the following:
-// ATTACH 'md:_share/sample_data/23b0d623-1361-421d-ae77-62d701d471e6';
+// ATTACH 'md:_share/mosaic_examples/b01cfda8-239e-4148-a228-054b94cdc3b4';
 // More details: https://motherduck.com/docs/sample-data-queries/attach-sample-database/
 
 export class GaiaStarCatalogViz implements Viz {
