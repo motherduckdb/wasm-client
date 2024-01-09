@@ -14,7 +14,7 @@ export class EarthquakeViz implements Viz {
     await vg.coordinator().exec(
       "CREATE TEMP TABLE IF NOT EXISTS earthquakes_viz AS SELECT * FROM mosaic_examples.main.earthquakes"
     );
-    const land = await fetch("https://raw.githubusercontent.com/uwdata/mosaic/1faee8bcd386f341df937dc161a0fbc67db29596/docs/public/data/countries-110m.json")
+    const land = await fetch("/countries-110m.json")
       .then(r => r.json())
       .then(json => topojson.feature(json, json.objects['land']).features);
     this.land = land;
