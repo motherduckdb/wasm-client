@@ -10,7 +10,6 @@ export class SeattleWeatherViz implements Viz {
   async initialize() {
     // Materialize the data for the viz into a local temp table.
     await vg.coordinator().exec(
-      // vg.loadParquet("earthquakes", "https://github.com/uwdata/mosaic/raw/1faee8bcd386f341df937dc161a0fbc67db29596/docs/public/data/earthquakes.parquet")
       "CREATE TEMP TABLE IF NOT EXISTS weather AS SELECT * FROM mosaic_examples.main.seattle_weather"
     );
   }
