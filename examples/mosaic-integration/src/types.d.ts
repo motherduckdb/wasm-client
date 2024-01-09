@@ -12,11 +12,14 @@ declare module '@uwdata/vgplot' {
   }
 
   class Param extends AsyncDispatch {
+    static value(value): Param;
+    static array(value: any[]): any;
   }
 
   class Selection extends Param {
     static crossfilter(): Selection;
     static single(): Selection;
+    static intersect(): Selection;
     value: unknown;
   }
 
@@ -73,6 +76,7 @@ declare module '@uwdata/vgplot' {
 
   // attributes
   function colorScheme(value: string): Directive;
+  function colorScale(value: Param): Directive;
   function height(value: number): Directive;
   function margins(value: {
     left: number;
@@ -81,6 +85,9 @@ declare module '@uwdata/vgplot' {
     bottom: number;
   }): Directive;
   function marginLeft(value: number): Directive;
+  function marginTop(value: number): Directive;
+  function marginLeft(value: number): Directive;
+  function marginRight(value: number): Directive;
   function width(value: number): Directive;
   
   function xAxis(value: 'top' | 'bottom' | null): Directive;
@@ -92,13 +99,25 @@ declare module '@uwdata/vgplot' {
   function yDomain(value: [number, number] | symbol): Directive;
   function yGrid(value: boolean): Directive;
   function yTickFormat(value: string): Directive;
+  function yScale(value: Param): Directive;
+  function yReverse(value: boolean): Directive;
+  function colorLegend(...args: unknown[]): Directive;
+  function colorDomain(...args: unknown[]): Directive;
+  function colorRange(...args: unknown[]): Directive;
+  function rDomain(...args: unknown[]): Directive;
+  function rRange(...args: unknown[]): Directive;
 
   // data
-  function from(table: unknown, options?: unknown): unknown;
+  function from(table: unknown, options?: unknown): JSONResponse;
+  function loadParquet(tableName: string, fileName: string, options?: unknown): string;
+  function sql(table: unknown, options?: unknown): unknown;
+  function dateMonthDay(string): unknown;
 
   // interactors
   function highlight(...args: unknown[]): Directive;
   function intervalX(...args: unknown[]): Directive;
+  function intervalXY(...args: unknown[]): Directive;
+  function xyDomain(...args: unknown[]): Directive;
   function toggleX(...args: unknown[]): Directive;
 
   // marks
@@ -117,10 +136,20 @@ declare module '@uwdata/vgplot' {
   function regressionY(...args: unknown[]): Directive;
   function text(...args: unknown[]): Directive;
   function tickY(...args: unknown[]): Directive;
+  function geo(...args: unknown[]): Directive;
+  function sphere(...args: unknown[]): Directive;
+  function style(...args: unknown[]): Directive;
+  function projectionType(...args: unknown[]): Directive;
+  function projectionRotate(...args: unknown[]): Directive;
+  function barX(...args: unknown[]): Directive;
+  function toggleY(...args: unknown[]): Directive;
+  function yLabel(...args: unknown[]): Directive;
 
   // layout
   function hconcat(...elements: Element[]): Element;
   function vconcat(...elements: Element[]): Element;
+  function hspace(...args: unknown): Element;
+  function slider(...args: unknown[]): Element;
   
   // transforms
   function bin(field: string): unknown
