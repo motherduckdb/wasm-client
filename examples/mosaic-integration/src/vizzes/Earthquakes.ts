@@ -8,17 +8,22 @@ import { Viz } from '../Viz';
 // More details: https://motherduck.com/docs/sample-data-queries/attach-sample-database/
 
 export class EarthquakeViz implements Viz {
-  private land: any | null = null;
+  private land: unknown | null = null;
   async initialize() {
     // Materialize the data for the viz into a local temp table.
-    await vg.coordinator().exec(
-      "CREATE TEMP TABLE IF NOT EXISTS earthquakes_viz AS SELECT * FROM mosaic_examples.main.earthquakes"
-    );
-    const land = await fetch("/countries-110m.json")
-      .then(r => r.json())
-      .then(json => topojson.feature(json, json.objects['land']).features);
-    this.land = land;
-    console.log(vg.from("countries_110m"));
+    await vg
+      .coordinator()
+      .exec(
+        'CREATE TEMP TABLE IF NOT EXISTS earthquakes_viz AS SELECT * FROM mosaic_examples.main.earthquakes'
+      );
+    this.land = await fetch('/countries-110m.json')
+      .then((r) => r.json())
+      .then((json: Parameters<typeof topojson.feature>[0]) => {
+        if (json.objects['land'].type !== 'GeometryCollection') {
+          throw Error('unexpected geojson type');
+        }
+        return topojson.feature(json, json.objects['land']).features;
+      });
   }
 
   render(): Element {
@@ -28,21 +33,34 @@ export class EarthquakeViz implements Viz {
 
     return vg.vconcat(
       vg.hconcat(
-        vg.slider({ label: "Longitude", as: $longitude, min: -180, max: 180, step: 1 }),
-        vg.slider({ label: "Latitude", as: $latitude, min: -90, max: 90, step: 1 })
+        vg.slider({
+          label: 'Longitude',
+          as: $longitude,
+          min: -180,
+          max: 180,
+          step: 1,
+        }),
+        vg.slider({
+          label: 'Latitude',
+          as: $latitude,
+          min: -90,
+          max: 90,
+          step: 1,
+        })
       ),
       vg.plot(
-        vg.geo(
-          this.land,
-          { fill: "currentColor", fillOpacity: 0.2 }
-        ),
+        vg.geo(this.land, { fill: 'currentColor', fillOpacity: 0.2 }),
         vg.sphere(),
-        vg.dot(
-          vg.from("earthquakes_viz"),
-          { x: "longitude", y: "latitude", r: vg.sql`POW(10, magnitude)`, stroke: "red", fill: "red", fillOpacity: 0.2 }
-        ),
-        vg.style("overflow: visible;"),
-        vg.projectionType("orthographic"),
+        vg.dot(vg.from('earthquakes_viz'), {
+          x: 'longitude',
+          y: 'latitude',
+          r: vg.sql`POW(10, magnitude)`,
+          stroke: 'red',
+          fill: 'red',
+          fillOpacity: 0.2,
+        }),
+        vg.style('overflow: visible;'),
+        vg.projectionType('orthographic'),
         vg.projectionRotate($rotate)
       )
     );
