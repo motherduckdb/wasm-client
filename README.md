@@ -181,26 +181,33 @@ Use the `type` property of the result object, which is either `'materialized'` o
 
 #### Materialized Results
 
-A materialized result contains a `rows` property, which is an array of row objects.
-Each row object has one property per column, named after that column. (Multiple columns with the same name are not currently supported.)
+A materialized result contains a `data` property, which provides several methods for getting the results.
+
+The number of columns and rows in the result are available through the `columnCount` and `rowCount` properties of `data`.
+Column names and types can be retrived using the `columnName(columnIndex)` and `columnType(columnIndex)` methods.
+Individual values can be accessed using the `value(columnIndex, rowIndex)` method. See below for details about the forms values can take.
+Several convenience methods also simplify common access patterns; see `singleValue()`, `columnNames()`, `deduplicatedColumnNames()`, and `toRows()`.
+
+The `toRows()` method is especially useful in many cases. It returns the result as an array of row objects.
+Each row object has one property per column, named after that column. (Multiple columns with the same name are dedupicated with suffixes.)
 The type of each column property of a row object depends on the type of the corresponding column in DuckDB.
 
 Many values are converted to a JavaScript primitive type, such as `boolean`, `number`, or `string`.
 Some numeric values too large to fit in a JavaScript `number` (e.g a DuckDB [BIGINT](https://duckdb.org/docs/sql/data_types/numeric#integer-types)) are converted to a JavaScript `bigint`.
-Values may also be JavaScript arrays or objects, for nested types such as DuckDB [LIST](https://duckdb.org/docs/sql/data_types/list) or [MAP](https://duckdb.org/docs/sql/data_types/map).
-Some DuckDB types, such as [DATE](https://duckdb.org/docs/sql/data_types/date), [TIME](https://duckdb.org/docs/sql/data_types/time), [TIMESTAMP](https://duckdb.org/docs/sql/data_types/timestamp), and [DECIMAL](https://duckdb.org/docs/sql/data_types/numeric#fixed-point-decimals), are converted to JavaScript objects implementing an interface specific to that type.
+Some DuckDB types, such as [DATE](https://duckdb.org/docs/sql/data_types/date), [TIME](https://duckdb.org/docs/sql/data_types/time), [TIMESTAMP](https://duckdb.org/docs/sql/data_types/timestamp), and [DECIMAL](https://duckdb.org/docs/sql/data_types/numeric#fixed-point-decimals), are converted to JavaScript objects implementing an interface specific to that type. Nested types such as DuckDB [LIST](https://duckdb.org/docs/sql/data_types/list), [MAP](https://duckdb.org/docs/sql/data_types/map), and [STRUCT](https://duckdb.org/docs/sql/data_types/struct) are also exposed through speical JavaScript objects.
 
-These objects all implement `toString` to return a string representation identical to DuckDB's string conversion (e.g. using [CAST](https://duckdb.org/docs/sql/expressions/cast.html) to VARCHAR).
+These objects all implement `toString` to return a string representation. For primitive, this representation is identical to DuckDB's string conversion (e.g. using [CAST](https://duckdb.org/docs/sql/expressions/cast.html) to VARCHAR). For nested types, the representation is equivalent to the syntax used to construct these types.
 They also have properties exposing the underlying value. For example, the object for a DuckDB TIME has a `microseconds` property (of type `bigint`). See the TypeScript type definitions for details.
 
 Note that these result types differ from those returned by DuckDB WASM without the MotherDuck WASM Client library. The MotherDuck WASM Client library implements custom conversion logic to preserve the full range of some types.
 
 #### Streaming Results
 
-A streaming result contains a `streamReader` property, which provides access to the underlying Arrow RecordBatch stream reader.
-This stream reader implements the async iterator protocol, and also has convenience methods such as `readAll` to materialize all batches.
-This can be useful if you need the underlying Arrow representation.
+A streaming result contains two ways to consume the results, `dataStream` and `arrowStream`. Both implement the async iterator protocol, and return items representing batches of rows, but return different kinds of batch objects. Batches correspond to DuckDB DataChunks, which are no more than 2048 rows.
 
+The `dataStream` iterators returns a sequence of `data` objects, each of which implements the same interface as the `data` property of a materialized query result, described above.
+
+The `arrowStream` property provides access to the underlying Arrow RecordBatch stream reader. This can be useful if you need the underlying Arrow representation. Also, this stream has convenience methods such as `readAll` to materialize all batches.
 Note, however, that Arrow performs sometimes lossy conversion of the underlying data to JavaScript types for certain DuckDB types, especially dates, times, and decimals.
 Also, converting Arrow values to strings will not always match DuckDB's string conversion.
 
