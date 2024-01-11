@@ -1,4 +1,4 @@
-import { MDConnection, QueryTableData } from "@motherduckdb/wasm-client";
+import { DuckDBRow, MDConnection } from "@motherduckdb/wasm-client";
 import { EventProps } from "@tremor/react";
 import { useCallback, useEffect, useState } from "react";
 import "./ChartsPane.css";
@@ -6,11 +6,11 @@ import { ComplaintTypesForYearChart } from "./ComplaintTypesForYearChart";
 import { ComplaintsByYearChart } from "./ComplaintsByYearChart";
 import { compaintsByYearSql, complaintTypesForYearSql } from "./sql";
 
-const noData: QueryTableData = [];
+const noData: readonly DuckDBRow[] = [];
 
 export function ChartsPane({ connection }: { connection: MDConnection }) {
   const [complaintsByYearData, setComplaintsByYearData] =
-    useState<QueryTableData | null>(null);
+    useState<readonly DuckDBRow[] | null>(null);
 
   const [loadingOpacity, setLoadingOpacity] = useState(0);
 
@@ -22,14 +22,14 @@ export function ChartsPane({ connection }: { connection: MDConnection }) {
     async function fetchData() {
       if (connection) {
         const result = await connection.evaluateQuery(compaintsByYearSql);
-        setComplaintsByYearData(result.rows);
+        setComplaintsByYearData(result.data.toRows());
       }
     }
     fetchData().catch(console.error);
   }, [connection]);
 
   const [complaintTypesForYearData, setComplaintTypesForYearData] =
-    useState<QueryTableData>(noData);
+    useState<readonly DuckDBRow[]>(noData);
 
   const handleValueChange = useCallback(
     async (value: EventProps) => {
@@ -37,7 +37,7 @@ export function ChartsPane({ connection }: { connection: MDConnection }) {
         const year = Number(value["Year"]);
         const sql = complaintTypesForYearSql(year);
         const result = await connection.evaluateQuery(sql);
-        setComplaintTypesForYearData(result.rows);
+        setComplaintTypesForYearData(result.data.toRows());
       } else {
         setComplaintTypesForYearData(noData);
       }
