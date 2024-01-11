@@ -4,7 +4,7 @@ import * as arrow from 'apache-arrow';
 
 async function arrowTableFromResult(result: QueryResult) {
   if (result.type === 'streaming') {
-    const batches = await result.streamReader.readAll();
+    const batches = await result.arrowStream.readAll();
     const table = new arrow.Table(batches);
     return table;
   } else {
