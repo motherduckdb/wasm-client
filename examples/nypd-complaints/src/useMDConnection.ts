@@ -6,11 +6,20 @@ export function useMDConnection() {
   const connect = useCallback(
     (token: string) => {
       if (!connection) {
+        let startTime = new Date();
+        console.log(startTime.toISOString(),'CONNECTION STARTING');
+        const createdConnection = MDConnection.create({
+          mdToken: token,
+          mdServerURL: 'https://api.staging.motherduck.com',
+        });
         setConnection(
-          MDConnection.create({
-            mdToken: token,
-          })
+          createdConnection
         );
+        createdConnection.isInitialized().then(() => {
+          let endTime = new Date();
+          let timeDelta = (endTime - startTime) / 1000;
+          console.log(endTime.toISOString(),'CONNECTION COMPLETED', timeDelta, 'seconds');
+        })
       } else {
         console.warn("Already connected!");
       }
