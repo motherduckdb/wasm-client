@@ -44,8 +44,6 @@ The [ChartsPane](src/ChartsPane.tsx) uses the connection to [run a SQL query](..
 
 ## Configuration
 
-Two pieces of nonstandard configuration are required:
-
-- The NPM registry to use for the `@motherduckdb` scope is configured in [.npmrc](.npmrc). This is necessary while the MotherDuck WASM Client library package is [published here](../../README.md#installation), on GitHub, instead of the main NPM repository at [npmjs.com](https://www.npmjs.com/).
+One piece of nonstandard configuration is required:
 
 - The necessary headers to trigger [cross-origin isolation](../../README.md#requirements) are set in [vite.config.ts](vite.config.ts).

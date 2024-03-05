@@ -1,4 +1,4 @@
-import { MDConnection } from "@motherduckdb/wasm-client";
+import { MDConnection } from "@motherduck/wasm-client";
 import { Button, TextInput } from "@tremor/react";
 import { useCallback, useState } from "react";
 import "./ConnectPane.css";

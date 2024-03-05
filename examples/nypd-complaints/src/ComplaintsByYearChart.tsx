@@ -1,4 +1,4 @@
-import { DuckDBRow } from "@motherduckdb/wasm-client";
+import { DuckDBRow } from "@motherduck/wasm-client";
 import { BarChart, EventProps, Title } from "@tremor/react";
 
 export function ComplaintsByYearChart({

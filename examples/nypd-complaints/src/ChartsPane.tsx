@@ -1,4 +1,4 @@
-import { DuckDBRow, MDConnection } from "@motherduckdb/wasm-client";
+import { DuckDBRow, MDConnection } from "@motherduck/wasm-client";
 import { EventProps } from "@tremor/react";
 import { useCallback, useEffect, useState } from "react";
 import "./ChartsPane.css";
