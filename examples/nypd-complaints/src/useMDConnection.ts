@@ -1,4 +1,4 @@
-import { MDConnection } from "@motherduckdb/wasm-client";
+import { MDConnection } from "@motherduck/wasm-client";
 import { useCallback, useState } from "react";
 
 export function useMDConnection() {

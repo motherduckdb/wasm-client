@@ -6,20 +6,15 @@
 
 The MotherDuck WASM Client library enables using MotherDuck through DuckDB WASM in your own browser applications.
 
+## Status
+
+Please note that the MotherDuck WASM Client library is in an early stage of active development. Its structure and API may change considerably.
+
+Our current intention is to align more closely with the DuckDB WASM API in the future, to make using MotherDuck with DuckDB WASM as easy as possible.
+
 ## Installation
 
-The @motherduckdb/wasm-client package is currently served from an NPM repository hosted on GitHub, not the main NPM repository on [npmjs.com](https://www.npmjs.com/).
-
-Before running `npm install @motherduckdb/wasm-client` in your project, add the following to your `.npmrc` file:
-
-```
-@motherduckdb:registry=https://npm.pkg.github.com
-//npm.pkg.github.com/:_authToken=<TOKEN>
-```
-
-Replace `<TOKEN>` with a GitHub personal access token. This token should have at least `read:packages`. For details on how to generate a token, see [Managing your Personal Access Tokens](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens), [Authenticating to GitHub Packages](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry#authenticating-to-github-packages), and [Authenticating with a Personal Access Token](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry#authenticating-with-a-personal-access-token). 
-
-(If you don't already have an `.npmrc` file, create one next to the `package.json` file for your project.)
+`npm install @motherduck/wasm-client`
 
 ## Requirements
 
@@ -41,29 +36,29 @@ Note that applications in this mode are restricted in [some](https://developer.m
 ## Dependencies
 
 The MotherDuck WASM Client library depends on `apache-arrow` as a peer dependency.
-If you use `npm` version 7 or later to install `@motherduckdb/wasm-client`, then `apache-arrow` will automatically be installed, if it is not already.
+If you use `npm` version 7 or later to install `@motherduck/wasm-client`, then `apache-arrow` will automatically be installed, if it is not already.
 
-If you already have `apache-arrow` installed, then `@motherduckdb/wasm-client` will use it, as long as it is a compatible version (`^14.0.x` at the time of this writing).
+If you already have `apache-arrow` installed, then `@motherduck/wasm-client` will use it, as long as it is a compatible version (`^14.0.x` at the time of this writing).
 
-Optionally, you can use a variant of `@motherduckdb/wasm-client` that bundles `apache-arrow` instead of relying on it as a peer dependency.
+Optionally, you can use a variant of `@motherduck/wasm-client` that bundles `apache-arrow` instead of relying on it as a peer dependency.
 Don't use this option if you are using `apache-arrow` elsewhere in your application, because different copies of this library don't work together.
 To use this version, change your imports to:
 ```ts
-import '@motherduckdb/wasm-client/with-arrow';
+import '@motherduck/wasm-client/with-arrow';
 ```
 instead of:
 ```ts
-import '@motherduckdb/wasm-client';
+import '@motherduck/wasm-client';
 ```
 
 ## Usage
 
 The MotherDuck WASM Client library is written in TypeScript and exposes full TypeScript type definitions. These instructions assume you are using it from TypeScript.
 
-Once you have installed `@motherduckdb/wasm-client`, you can import the main class, `MDConnection`, as follows:
+Once you have installed `@motherduck/wasm-client`, you can import the main class, `MDConnection`, as follows:
 
 ```ts
-import { MDConnection } from '@motherduckdb/wasm-client';
+import { MDConnection } from '@motherduck/wasm-client';
 ```
 
 ### Creating Connections
@@ -203,15 +198,21 @@ Note that these result types differ from those returned by DuckDB WASM without t
 
 #### Streaming Results
 
-A streaming result contains two ways to consume the results, `dataStream` and `arrowStream`. Both implement the async iterator protocol, and return items representing batches of rows, but return different kinds of batch objects. Batches correspond to DuckDB DataChunks, which are no more than 2048 rows.
+A streaming result contains three ways to consume the results, `arrowStream`, `dataStream`, and `dataReader`. The first two (`arrowStream` and `dataStream`) implement the async iterator protocol, and return items representing batches of rows, but return different kinds of batch objects. Batches correspond to DuckDB DataChunks, which are no more than 2048 rows. The third (`dataReader`) wraps `dataStream` and makes consuming multiple batches easier.
 
-The `dataStream` iterators returns a sequence of `data` objects, each of which implements the same interface as the `data` property of a materialized query result, described above.
+The `dataStream` iterator returns a sequence of `data` objects, each of which implements the same interface as the `data` property of a materialized query result, described above.
+
+The `dataReader` implements the same `data` interface, but also adds useful methods such as `readAll` and `readUntil`, which can be used to read at least a given number of rows, possibly across multiple batches.
 
 The `arrowStream` property provides access to the underlying Arrow RecordBatch stream reader. This can be useful if you need the underlying Arrow representation. Also, this stream has convenience methods such as `readAll` to materialize all batches.
 Note, however, that Arrow performs sometimes lossy conversion of the underlying data to JavaScript types for certain DuckDB types, especially dates, times, and decimals.
 Also, converting Arrow values to strings will not always match DuckDB's string conversion.
 
-Finally, note that results of remote queries are not streamed end-to-end yet.
+Note that results of remote queries are not streamed end-to-end yet.
 Results of remote queries are fully materialized on the client upstream of this API.
 So the first batch will not be returned from this API until all results have been received by the client.
 End-to-end streaming of remote query results is on our roadmap.
+
+### DuckDB WASM API
+
+To access the underlying DuckDB WASM instance, use the `getAsyncDuckDb` function. Note that this function returns (a Promise to) a singleton instance of DuckDB WASM also used by the MotherDuck WASM Client.

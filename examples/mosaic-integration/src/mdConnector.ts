@@ -1,4 +1,4 @@
-import { MDConnection, QueryResult } from '@motherduckdb/wasm-client';
+import { MDConnection, QueryResult } from '@motherduck/wasm-client';
 import { Connector, Query } from '@uwdata/vgplot';
 import * as arrow from 'apache-arrow';
 
