@@ -10,9 +10,7 @@ export class GaiaStarCatalogViz implements Viz {
   async initialize() {
     // Materialize the data for the viz into a local temp table.
     await vg.coordinator().exec(
-      `CREATE DATABASE IF NOT EXISTS mosaic_examples_temp;`);
-    await vg.coordinator().exec(
-      `CREATE TABLE IF NOT EXISTS mosaic_examples_temp.gaia_viz AS -- compute u and v with natural earth projection
+      `CREATE TEMP VIEW IF NOT EXISTS gaia_viz AS -- compute u and v with natural earth projection
       WITH prep AS (
         SELECT
           radians((-l + 540) % 360 - 180) AS lambda,
@@ -41,7 +39,7 @@ export class GaiaStarCatalogViz implements Viz {
     return vg.hconcat(
       vg.vconcat(
         vg.plot(
-          vg.raster(vg.from('mosaic_examples_temp.gaia_viz', { filterBy: $brush }), {
+          vg.raster(vg.from('gaia_viz', { filterBy: $brush }), {
             x: 'u',
             y: 'v',
             fill: 'density',
@@ -61,7 +59,7 @@ export class GaiaStarCatalogViz implements Viz {
         ),
         vg.hconcat(
           vg.plot(
-            vg.rectY(vg.from('mosaic_examples_temp.gaia_viz', { filterBy: $brush }), {
+            vg.rectY(vg.from('gaia_viz', { filterBy: $brush }), {
               x: vg.bin('phot_g_mean_mag'),
               y: vg.count(),
               fill: 'steelblue',
@@ -76,7 +74,7 @@ export class GaiaStarCatalogViz implements Viz {
             vg.marginLeft(65)
           ),
           vg.plot(
-            vg.rectY(vg.from('mosaic_examples_temp.gaia_viz', { filterBy: $brush }), {
+            vg.rectY(vg.from('gaia_viz', { filterBy: $brush }), {
               x: vg.bin('parallax'),
               y: vg.count(),
               fill: 'steelblue',
@@ -94,7 +92,7 @@ export class GaiaStarCatalogViz implements Viz {
       ),
       vg.hspace(10),
       vg.plot(
-        vg.raster(vg.from('mosaic_examples_temp.gaia_viz', { filterBy: $brush }), {
+        vg.raster(vg.from('gaia_viz', { filterBy: $brush }), {
           x: 'bp_rp',
           y: 'phot_g_mean_mag',
           fill: 'density',
