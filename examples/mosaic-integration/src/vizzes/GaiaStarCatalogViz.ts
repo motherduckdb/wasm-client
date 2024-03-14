@@ -10,7 +10,7 @@ export class GaiaStarCatalogViz implements Viz {
   async initialize() {
     // Materialize the data for the viz into a local temp table.
     await vg.coordinator().exec(
-      `CREATE TEMP TABLE IF NOT EXISTS gaia_viz AS -- compute u and v with natural earth projection
+      `CREATE TEMP VIEW IF NOT EXISTS gaia_viz AS -- compute u and v with natural earth projection
       WITH prep AS (
         SELECT
           radians((-l + 540) % 360 - 180) AS lambda,
