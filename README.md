@@ -14,7 +14,7 @@ Our current intention is to align more closely with the DuckDB WASM API in the f
 
 ## Installation
 
-`npm install @motherduck/wasm-client`
+`npm add @motherduck/wasm-client`
 
 ## Requirements
 
