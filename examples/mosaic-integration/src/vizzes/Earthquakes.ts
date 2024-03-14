@@ -14,7 +14,7 @@ export class EarthquakeViz implements Viz {
     await vg
       .coordinator()
       .exec(
-        'CREATE TEMP TABLE IF NOT EXISTS earthquakes_viz AS SELECT * FROM mosaic_examples.main.earthquakes'
+        'CREATE TEMP VIEW IF NOT EXISTS earthquakes_viz AS SELECT * FROM mosaic_examples.main.earthquakes'
       );
     this.land = await fetch('/countries-110m.json')
       .then((r) => r.json())
