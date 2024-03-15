@@ -10,12 +10,6 @@ import { Viz } from '../Viz';
 export class EarthquakeViz implements Viz {
   private land: unknown | null = null;
   async initialize() {
-    // Materialize the data for the viz into a local temp table.
-    await vg
-      .coordinator()
-      .exec(
-        'CREATE TEMP VIEW IF NOT EXISTS earthquakes_viz AS SELECT * FROM mosaic_examples.main.earthquakes'
-      );
     this.land = await fetch('/countries-110m.json')
       .then((r) => r.json())
       .then((json: Parameters<typeof topojson.feature>[0]) => {
@@ -51,7 +45,7 @@ export class EarthquakeViz implements Viz {
       vg.plot(
         vg.geo(this.land, { fill: 'currentColor', fillOpacity: 0.2 }),
         vg.sphere(),
-        vg.dot(vg.from('earthquakes_viz'), {
+        vg.dot(vg.from('mosaic_examples.main.earthquakes'), {
           x: 'longitude',
           y: 'latitude',
           r: vg.sql`POW(10, magnitude)`,

@@ -8,7 +8,6 @@ import { Viz } from '../Viz';
 
 export class GaiaStarCatalogViz implements Viz {
   async initialize() {
-    // Materialize the data for the viz into a local temp table.
     await vg.coordinator().exec(
       `CREATE TEMP VIEW IF NOT EXISTS gaia_viz AS -- compute u and v with natural earth projection
       WITH prep AS (
