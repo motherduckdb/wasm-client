@@ -10,7 +10,7 @@ export class NYPDComplaintsViz implements Viz {
   async initialize() {
     // Materialize the data for the viz into a local temp table.
     await vg.coordinator().exec(
-      `create temp view if not exists complaints as 
+      `create temp table if not exists complaints as 
         select year(created_date)::int as Year, count(*)::int as Complaints
         from sample_data.nyc.service_requests
         where Year < 2023
@@ -19,7 +19,7 @@ export class NYPDComplaintsViz implements Viz {
         order by 1;`
     );
     await vg.coordinator().exec(
-      `create temp view if not exists complaints_details as
+      `create temp table if not exists complaints_details as
         select year(created_date)::int as Year, complaint_type as Type, count(*)::int as Complaints
         from sample_data.nyc.service_requests
         where Year < 2023

@@ -12,7 +12,7 @@ export class SeattleWeatherViz implements Viz {
     await vg
       .coordinator()
       .exec(
-        'CREATE TEMP VIEW IF NOT EXISTS weather AS SELECT * FROM mosaic_examples.main.seattle_weather'
+        'CREATE TEMP TABLE IF NOT EXISTS weather AS SELECT * FROM mosaic_examples.main.seattle_weather'
       );
   }
 
