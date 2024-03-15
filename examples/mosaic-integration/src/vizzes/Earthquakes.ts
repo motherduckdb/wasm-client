@@ -1,6 +1,7 @@
 import * as vg from '@uwdata/vgplot';
 import * as topojson from 'topojson-client';
 import { Viz } from '../Viz';
+import countries from '../assets/countries-110m.json?url';
 
 // Requires the MotherDuck sample_data database to be present.
 // It is automatically shared to all new MotherDuck accounts, but if you've detached it you can get it back with the following:
@@ -10,7 +11,7 @@ import { Viz } from '../Viz';
 export class EarthquakeViz implements Viz {
   private land: unknown | null = null;
   async initialize() {
-    this.land = await fetch('/countries-110m.json')
+    this.land = await fetch(countries)
       .then((r) => r.json())
       .then((json: Parameters<typeof topojson.feature>[0]) => {
         if (json.objects['land'].type !== 'GeometryCollection') {
