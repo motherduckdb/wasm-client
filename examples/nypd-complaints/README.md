@@ -4,7 +4,7 @@ An example of using the MotherDuck WASM Client library to implement a simple das
 
 [Try the live demo!](https://motherduckdb.github.io/wasm-client/nypd-complaints/)
 
-<img src="docs/nypd_complaints.png" alt="Screenshot of NYPD Complaints example" width="600px">
+[<img src="docs/nypd_complaints.png" alt="Screenshot of NYPD Complaints example" width="600px">](https://motherduckdb.github.io/wasm-client/nypd-complaints/)
 
 ## Usage
 
