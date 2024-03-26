@@ -2,9 +2,9 @@
 
 An example of using the MotherDuck WASM Client library to implement a simple dashboard showing the different types of complaints received by the New York City Police Department from 2010 through 2022. (Data sourced from [here](https://data.cityofnewyork.us/Social-Services/311-Service-Requests-from-2010-to-Present/erm2-nwe9).)
 
-[Try the live demo!](https://motherduckdb.github.io/wasm-client/nypd-complaints/)
-
 [<img src="docs/nypd_complaints.png" alt="Screenshot of NYPD Complaints example" width="600px">](https://motherduckdb.github.io/wasm-client/nypd-complaints/)
+
+[Demo](https://motherduckdb.github.io/wasm-client/nypd-complaints/)
 
 ## Usage
 

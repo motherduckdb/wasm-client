@@ -2,9 +2,9 @@
 
 An example integrating the MotherDuck WASM Client library with [Mosaic](https://uwdata.github.io/mosaic/) to produce interactive visualizations.
 
-[Try the live demo!](https://motherduckdb.github.io/wasm-client/mosaic-integration/)
-
 [<img src="docs/mosaic-flights.png" alt="Screenshot of Mosaic Flights 10M example" width="600px">](https://motherduckdb.github.io/wasm-client/mosaic-integration/)
+
+[Demo](https://motherduckdb.github.io/wasm-client/mosaic-integration/)
 
 ## Usage
 
