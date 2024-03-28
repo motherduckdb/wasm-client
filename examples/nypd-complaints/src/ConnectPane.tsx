@@ -3,8 +3,7 @@ import { Button, TextInput } from "@tremor/react";
 import { useCallback, useEffect, useState } from "react";
 import "./ConnectPane.css";
 
-// TODO: use https://app.motherduck.com
-const motherDuckUrl = 'http://localhost:8080';
+const motherDuckUrl = 'https://app.motherduck.com';
 
 const appName = 'WASM Client Library Example: NYPD Complaints';
 
