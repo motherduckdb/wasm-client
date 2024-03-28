@@ -1,7 +1,7 @@
-import { MDConnection } from "@motherduck/wasm-client";
-import { Button, TextInput } from "@tremor/react";
-import { useCallback, useEffect, useState } from "react";
-import "./ConnectPane.css";
+import { MDConnection } from '@motherduck/wasm-client';
+import { Button, TextInput } from '@tremor/react';
+import { useCallback, useEffect, useState } from 'react';
+import './ConnectPane.css';
 
 const motherDuckUrl = 'https://app.motherduck.com';
 
@@ -24,7 +24,9 @@ export function ConnectPane({
   const handleGetTokenButtonClick = useCallback(() => {
     const url = new URL(window.location.href);
     url.searchParams.set('tokenInClipboard', 'y');
-    window.location.href = `${motherDuckUrl}/token-request?appName=${encodeURIComponent(appName)}&returnTo=${encodeURIComponent(url.toString())}`;
+    window.location.href = `${motherDuckUrl}/token-request?appName=${encodeURIComponent(
+      appName
+    )}&returnTo=${encodeURIComponent(url.toString())}`;
   }, []);
 
   const handleConnectButtonClick = useCallback(() => {
@@ -82,11 +84,7 @@ export function ConnectPane({
         />
       </div>
       <div id="connect-button-row">
-        <Button
-          onClick={handleGetTokenButtonClick}
-        >
-          Get Token
-        </Button>
+        <Button onClick={handleGetTokenButtonClick}>Get Token</Button>
         <Button
           disabled={!(!connection && token)}
           onClick={handleConnectButtonClick}
