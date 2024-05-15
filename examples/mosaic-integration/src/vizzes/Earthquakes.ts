@@ -3,10 +3,8 @@ import * as topojson from 'topojson-client';
 import { Viz } from '../Viz';
 import countries from '../assets/countries-110m.json?url';
 
-// Requires the MotherDuck sample_data database to be present.
-// It is automatically shared to all new MotherDuck accounts, but if you've detached it you can get it back with the following:
+// Depends on the mosaic_examples share. Attach this by running the following:
 // ATTACH 'md:_share/mosaic_examples/b01cfda8-239e-4148-a228-054b94cdc3b4';
-// More details: https://motherduck.com/docs/sample-data-queries/attach-sample-database/
 
 export class EarthquakeViz implements Viz {
   private land: unknown | null = null;
