@@ -4,7 +4,7 @@ import { Viz } from '../Viz';
 // From https://uwdata.github.io/mosaic/examples/flights-200k.html
 // and https://uwdata.github.io/mosaic/examples/flights-10m.html
 
-// Depends on the mosaic_examples share. Attaches this by running the following:
+// Depends on the mosaic_examples share. Attach this by running the following:
 // ATTACH 'md:_share/mosaic_examples/b01cfda8-239e-4148-a228-054b94cdc3b4';
 
 export type FlightsTableName = 'flights_200k' | 'flights_10m';
