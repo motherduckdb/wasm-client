@@ -43,7 +43,7 @@ export class SeattleWeatherViz implements Viz {
           vg.highlight({ by: $range, fill: '#ccc', fillOpacity: 0.2 }),
           vg.colorLegend({ as: $click, columns: 1 }),
           vg.xyDomain(vg.Fixed),
-          vg.xTickFormat('%b'),
+          // vg.xTickFormat('%b'), // This causes a warning with newer versions of duckdb-wasm
           vg.colorDomain($domain),
           vg.colorRange($colors),
           vg.rDomain(vg.Fixed),
