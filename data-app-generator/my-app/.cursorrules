@@ -1,0 +1,96 @@
+### Rules for Generating MotherDuck WASM Data App
+
+#### Key Principles
+- Write concise, technical responses with accurate examples.
+- Use functional, declarative programming; avoid classes where possible.
+- Prefer iteration and modularization over code duplication.
+- Use descriptive variable names with auxiliary verbs (e.g., is_active, has_permission).
+- Use lowercase with underscores for directories and files (e.g., components/data_component.js).
+- Favor named exports for components and utility functions.
+- Use the Receive an Object, Return an Object (RORO) pattern.
+
+#### General Guidelines
+- Use `def` for pure functions and `async def` for asynchronous operations.
+- Use type hints for all function signatures; prefer structured types over raw dictionaries.
+- File structure: exported components, sub-components, utilities, static content, types (schemas, interfaces).
+- Avoid unnecessary curly braces in conditional statements.
+- For single-line statements in conditionals, omit curly braces.
+- Use concise, one-line syntax for simple conditional statements (e.g., if condition: do_something()).
+
+#### Error Handling and Validation
+- Prioritize error handling and edge cases:
+  - Handle errors and edge cases at the beginning of functions.
+  - Use early returns for error conditions to avoid deeply nested if statements.
+  - Place the happy path last in the function for improved readability.
+  - Avoid unnecessary `else` statements; use the `if-return` pattern instead.
+  - Use guard clauses to handle preconditions and invalid states early.
+  - Implement proper error logging and user-friendly error messages.
+  - Use custom error types or error factories for consistent error handling.
+
+#### Dependencies
+- MotherDuck WASM Client
+- React
+- Tailwind CSS
+- lucide-react (icon library)
+- recharts (charting library)
+- shadcn/ui (UI component library)
+
+#### React-Specific Guidelines
+- Use functional components (plain functions) with hooks.
+- Use declarative props definitions with clear type annotations.
+- Always prefer hooks for state management and side effects.
+- Minimize stateful logic; prefer use of effects and context.
+- Prefer context providers for global state and configuration over prop drilling.
+- Use middleware for logging, error monitoring, and performance optimization.
+- Optimize for performance using async-wait patterns for I/O-bound tasks, caching strategies, and lazy loading.
+- Use error boundaries for graceful error handling in UI components.
+- Use suspense for data fetching when possible.
+
+#### Performance Optimization
+- Minimize blocking I/O operations; use asynchronous operations for all database calls and external API requests.
+- Implement caching for static and frequently accessed data using tools like local storage or memoization.
+- Optimize data serialization and deserialization with efficient patterns.
+- Use lazy loading techniques for large datasets or substantial API responses.
+
+#### DuckDB and MotherDuck SQL Syntax Rules
+- Use prepared statements when passing text arguments to any SQL function:
+  ```
+  const user_input = 'This is my text [...]';
+  const result = await connection.evaluatePreparedStatement(`SELECT prompt(?) as response`, [user_input]);
+  ```
+- DuckDB is largely compatible with Postgres SQL, MotherDuck is is compatible with DuckDB SQL. Some additional hints below.
+- DuckDB uses double quotes (") for identifiers that contain spaces or special characters, or to force case-sensitivity and single quotes (') to define string literals
+- DuckDB can query CSV, Parquet, and JSON directly from local, http and s3 paths without loading them first, e.g. `SELECT * FROM 'data.csv';` It also supports 
+- DuckDB supports attaching multiple databases, unsing the ATTACH statement: `ATTACH 'my_database.duckdb' AS mydb;`. Tables within attached databases can be accessed using the dot notation (.), e.g. `SELECT * FROM mydb.table_name syntax`. The default databases doesn't require the do notation to access tables. The default database can be changed with the USE statement, e.g. `USE my_db;`.
+- DuckDB is generally more lenient with implicit type conversions (e.g. `SELECT '42' + 1;` - Implicit cast, result is 43), but you can always be explicit using `::`, e.g. `SELECT '42'::INTEGER + 1;` or `SELECT '2022-05-01'::DATE`
+- DuckDB can extract parts of strings and lists using [start:end] or [start:end:step] syntax. Indexes start at 1. String slicing: `SELECT 'DuckDB'[1:4];`. Array/List slicing: `SELECT [1, 2, 3, 4][1:3];`
+- DuckDB has a powerful way to select or transform multiple columns using patterns or functions. You can select columns matching a pattern: `SELECT COLUMNS('sales_.*') FROM sales_data;` or transform multiple columns with a function: `SELECT AVG(COLUMNS('sales_.*')) FROM sales_data;`
+- DuckDB can combine tables by matching column names, not just their positions using UNION BY NAME. E.g. `SELECT * FROM table1 UNION BY NAME SELECT * FROM table2;`
+- DuckDB has an intuitive syntax to access struct fields using dot notation (.) or brackets ([]) with the field name. Maps fields can be accessed by brackets ([]).
+- DuckDB's way of converting between text and timestamps, and extract date parts. Current date as 'YYYY-MM-DD': `SELECT strftime(NOW(), '%Y-%m-%d');` String to timestamp: `SELECT strptime('2023-07-23', '%Y-%m-%d')::TIMESTAMP;`, Extract Year from date: `SELECT EXTRACT(YEAR FROM DATE '2023-07-23');`
+- Column Aliases in WHERE/GROUP BY/HAVING: You can use column aliases defined in the SELECT clause within the WHERE, GROUP BY, and HAVING clauses. E.g.: `SELECT a + b AS total FROM my_table WHERE total > 10 GROUP BY total HAVING total < 20;`
+- DuckDB allows generating lists using expressions similar to Python list comprehensions. E.g. `SELECT [x*2 FOR x IN [1, 2, 3]];` Returns [2, 4, 6].
+- DuckDB allows chaining multiple function calls together using the dot (.) operator. E.g.: `SELECT 'DuckDB'.replace('Duck', 'Goose').upper(); -- Returns 'GOOSEDB';`
+- DuckDB has a JSON data type. It supports selecting fields from the JSON with a JSON-Path expression using the arrow operator, -> (returns JSON) or ->> (returns text) with JSONPath expressions. For example: `SELECT data->'$.user.id' AS user_id, data->>'$.event_type' AS event_type FROM events;`
+- DuckDB has built-in functions for regex regexp_matches(column, regex), regexp_replace(column, regex), and regexp_extract(column, regex).
+- DuckDB has a way to quickly get a subset of your data with `SELECT * FROM large_table USING SAMPLE 10%;`
+- DuckDB can read csv, parquet and json files directly from HuggingFace `SELECT * FROM 'hf://datasets/⟨my_username⟩/⟨my_dataset⟩/⟨path_to_file⟩'`. Paths can also contain a glob pattern e.g. '*.parquet'.  
+- MotherDuck allows accessing tables using fully qualified names (FQN) in the format `<database>.<schema>.<object>`. This allows you to query objects regardless of context. E.g., `SELECT * FROM mydatabase.myschema.mytable;`
+- MotherDuck allows attaching remote databases using `ATTACH '<remote MotherDuck database name>'` or `ATTACH 'md:<remote MotherDuck database name>';` which makes the data accessible across sessions until explicitly detached.
+- MotherDuck allows attaching a share using the `ATTACH '<share URL>' [AS <database name>];` syntax. This allows recipients to work with shared data seamlessly.
+- MotherDuck allows optimized execution control using the `MD_RUN` parameter with certain functions like `read_csv()`. The parameter values can be `MD_RUN=LOCAL`, `MD_RUN=REMOTE`, and `MD_RUN=AUTO` to define where the function runs. Example usage: `SELECT * FROM read_csv_auto('https://example.com/data.csv', MD_RUN=REMOTE);`
+- MotherDuck AI can answer questions in natural language using `prompt_query` pragma. Syntax: `pragma prompt_query('<natural language question>')`. E.g. `pragma prompt_query('what are the top domains ...?');`
+- MotherDuck AI can generate SQL from natural language using `prompt_sql` table function. Syntax: `CALL prompt_sql('<natural language question>', [include_tables=['<table_name>', '<table_name>']);`. E.g. `CALL prompt_sql('what are the top domains ...?');`
+- MotherDuck AI can describe database contents using `prompt_schema` table function. Syntax: `CALL prompt_schema([include_tables=['<table_name>', '<table_name>']);`. E.g. `CALL prompt_schema();`
+- MotherDuck AI computes text embeddings using `embedding` scalar function. Syntax: `SELECT embedding(my_text_column) FROM my_table;`. E.g. `CREATE TABLE my_db.movies AS SELECT ..., embedding(overview) AS ...;`
+- MotherDuck AI performs similarity search using `array_cosine_similarity` function. Example:
+  ```sql
+  SELECT title, array_cosine_similarity(embedding('query'), overview_embeddings) as similarity
+  FROM my_db.movies
+  ORDER BY similarity DESC LIMIT 1;
+  ```
+- MotherDuck AI generates text responses using `prompt` function. Syntax: `SELECT prompt('text');`. E.g. `SELECT prompt('Write a poem about ducks') as response;`. Only use it for single-row and constant inputs;`
+- IMPORTANT: Always use the fully qualified table name when you generate SQL queries. <database_name>.<schema_name>.<table_name>, e.g. `sample_data.hn.hacker_news` You can ommit the schema_name if it is unknown or if it is 'main', but always prepend the database name.
+
+#### Database Schema
+<your database schema>

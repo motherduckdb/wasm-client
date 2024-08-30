@@ -17,3 +17,7 @@ An [example](./examples/nypd-complaints/) of using the [MotherDuck WASM Client l
 [<img src="examples/nypd-complaints/docs/nypd_complaints.png" alt="Screenshot of NYPD Complaints example" width="600px">](https://motherduckdb.github.io/wasm-client/nypd-complaints/)
 
 [Code](./examples/nypd-complaints/) | [Demo](https://motherduckdb.github.io/wasm-client/nypd-complaints/)
+
+## Data App Generator
+
+An [AI coding assistant](./data-app-generator/) for MotherDuck data apps using the [MotherDuck WASM Client library](https://www.npmjs.com/package/@motherduck/wasm-client).
