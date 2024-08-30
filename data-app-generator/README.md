@@ -1,4 +1,4 @@
-# MotherDuck WASM App Generator
+# MotherDuck Data App Generator
 
 ## Setup
 
