@@ -32,7 +32,7 @@ function App() {
             <>Loading...</>
         ) : (
             <>
-              <button onClick={clickHandler}>Click me</button>
+              <button onClick={clickHandler}>Show all my Databases</button>
               <table>
                 <thead>
                 <tr>

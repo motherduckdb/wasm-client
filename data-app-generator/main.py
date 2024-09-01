@@ -92,12 +92,12 @@ st.sidebar.info("""
 - If you encounter UI issues, describe them to the agent.
 
 ### Continue in Cursor
-We create a .cursorrules file in the my-app folder containing your schema information and MotherDuck Data App specific instructions.
+We generate a .cursorrules file in the my-app folder containing your schema information and MotherDuck Data App specific instructions.
 
 1. Open the my-app project in [Cursor](https://cursor.sh).
 2. Go to Settings -> General in Cursor and make sure 'Include .cursorrules file' is activated.
 4. Choose your preferred coding assistant model. We recommend using anthropic/claude-3.5-sonnet.
-5. You can now continue coding in Cursor.
+5. You can now continue developing your app in Cursor.
 """)
 
 # Database selection dropdown
