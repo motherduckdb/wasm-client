@@ -11,4 +11,4 @@
 7. `streamlit run main.py`
 
 ## Demo
-![MotherDuck Data App Generator Demo](wasm-generator-demo.gif)
+![MotherDuck Data App Generator Demo](app-generator-demo.gif)
