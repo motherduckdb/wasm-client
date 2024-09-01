@@ -41,9 +41,9 @@ def get_database_schema(database_name):
         return ""
     return schema_res[0]
 
-def write_cursor_file(database_schema):
+def write_cursor_file(database_name, database_schema):
     with open("my-app/.cursorrules", "w+") as f:
-        f.write(generator.cursor_prompt.format(database_schema=database_schema))
+        f.write(generator.cursor_prompt.format(database_name=database_name, database_schema=database_schema))
 
 client = get_openrouter_client()
 conn = get_motherduck_connection()
@@ -143,7 +143,7 @@ if prompt := st.chat_input("What can I do for you?"):
             internal_prompt = internal_prompt + f"User instruction: {prompt}"
 
     st.session_state.messages_internal.append({"role": "user", "content": internal_prompt})
-    write_cursor_file(st.session_state.database_schema)
+    write_cursor_file(database, schema)
 
     with st.chat_message("user"):
         st.markdown(prompt)

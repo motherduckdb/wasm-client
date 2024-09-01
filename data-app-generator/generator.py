@@ -408,6 +408,8 @@ cursor_prompt = """### Rules for Generating MotherDuck WASM Data App
 - IMPORTANT: Always use the fully qualified table name when you generate SQL queries. <database_name>.<schema_name>.<table_name>, e.g. `sample_data.hn.hacker_news` You can ommit the schema_name if it is unknown or if it is 'main', but always prepend the database name.
 
 #### Database Schema
+Database Name: {database_name}
+Tables:
 {database_schema}
 
 """
