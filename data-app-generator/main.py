@@ -116,23 +116,35 @@ for message in st.session_state.messages:
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
 
-if "messages_internal" not in st.session_state:
+if prompt := st.chat_input("What can I do for you?"):
     st.session_state.messages_internal = []
     st.session_state.messages_internal.append({"role": "system", "content": generator.generator_prompt})
-
-if prompt := st.chat_input("What can I do for you?"):
+    st.session_state.messages_internal += st.session_state.messages
     st.session_state.messages.append({"role": "user", "content": prompt})
 
     # Append database schema to the prompt
-    if st.session_state.database_schema:
-        if not st.session_state.generated_first_component:
-            context_prompt = f"Here's the schema of the selected database: \n{st.session_state.selected_database} \nAlways prepend the database name to the table name when you generate queries ({st.session_state.selected_database}.<table_name>):\n{st.session_state.database_schema}\n\nUser instruction: {prompt}"
-        else:
-            context_prompt = f"User instruction: {prompt}"
-        write_cursor_file(st.session_state.database_schema)
+    schema = st.session_state.database_schema if st.session_state.database_schema else ""
+    database = st.session_state.selected_database if st.session_state.selected_database else ""
+    if not st.session_state.generated_first_component:
+        internal_prompt = f"Here's the schema of the selected database: \n{database} \nAlways prepend the database name to the table name when you generate queries ({database}.<table_name>):\n{schema}\n\nUser instruction: {prompt}"
     else:
-        context_prompt = prompt
-    st.session_state.messages_internal.append({"role": "user", "content": context_prompt})
+        with open("my-app/src/components/MyApp.jsx", "r") as f:
+            app_code = f.read()
+
+        internal_prompt = f"You are connected to database: \n{database} \n"\
+        f"Always prepend the database name to the table name when you generate queries ({database}.<table_name>). \n"\
+        f"Here is the schema of the database: \n{schema}\n"\
+        f"Here is the user's current app: \n<component>{app_code}<component>\n\n"
+
+        if st.session_state.error_state:
+            internal_prompt = internal_prompt + "I encountered an error with the following message: " + st.session_state.error_state + f"\nUser instruction: {prompt}"
+            st.session_state.error_state = None
+        else:
+            internal_prompt = internal_prompt + f"User instruction: {prompt}"
+
+    st.session_state.messages_internal.append({"role": "user", "content": internal_prompt})
+    write_cursor_file(st.session_state.database_schema)
+
     with st.chat_message("user"):
         st.markdown(prompt)
 
@@ -162,7 +174,7 @@ if prompt := st.chat_input("What can I do for you?"):
 
         response = completion.choices[0].message.content
         print(response)
-        st.session_state.messages_internal.append({"role": "user", "content": response})
+        st.session_state.messages_internal.append({"role": "assistant", "content": response})
 
         # write to MyApp.tsx
         clean_text, component_code = generator.extract_component(response)
@@ -178,9 +190,8 @@ if prompt := st.chat_input("What can I do for you?"):
             except subprocess.CalledProcessError as e:
                 error_message = f"Error running npm run build: {e.stderr}"
                 print(error_message)
-                st.session_state.messages_internal.append({"role": "user", "content": "I encountered an error with the following message, please fix it: " + error_message})
                 # Display error message in the UI
-                st.session_state.error_state = f"An error occurred during the build process: {error_message}. \nDo you want me to fix it?"
+                st.session_state.error_state = error_message
                 st.session_state.show_open_app = False
 
     with st.chat_message("assistant"):
@@ -191,18 +202,16 @@ if prompt := st.chat_input("What can I do for you?"):
                     "X-Title": "MotherDuck Data App Generator"
                 },
                 model="anthropic/claude-3.5-sonnet",
-                messages=[
-                    {"role": m["role"], "content": m["content"]}
-                    for m in st.session_state.messages+[{"role": "assistant", "content": response}, {"role": "user", "content": "Summarize the changes you have done in one sentence"}]
-                ],
+                messages= st.session_state.messages[-1:] +
+                          [{"role": "assistant", "content": response},
+                          {"role": "user", "content": "Summarize the changes you have done in one sentence"}],
                 stream=True,
                 timeout=60
             )
             response = st.write_stream(stream)
             st.session_state.messages.append({"role": "assistant", "content": response})
             if st.session_state.error_state:
-                st.error(st.session_state.error_state)
-                st.session_state.error_state = None
+                st.error(f"An error occurred during the build process: {st.session_state.error_state}. \nDo you want me to fix it?")
 
         except APIError as e:
             st.error(f"An error occurred while communicating with the API: {str(e)}")
