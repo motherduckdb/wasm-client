@@ -21,3 +21,5 @@ An [example](./examples/nypd-complaints/) of using the [MotherDuck WASM Client l
 ## Data App Generator
 
 An [AI coding assistant](./data-app-generator/) for MotherDuck data apps using the [MotherDuck WASM Client library](https://www.npmjs.com/package/@motherduck/wasm-client).
+
+![MotherDuck Data App Generator Demo](data-app-generator/docs/app-generator-demo.gif)
