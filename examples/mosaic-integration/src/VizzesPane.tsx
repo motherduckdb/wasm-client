@@ -3,6 +3,8 @@ import { Viz } from './Viz';
 import './VizzesPane.css';
 import { MarkTypesViz, NYPDComplaintsViz, GaiaStarCatalogViz, EarthquakeViz, SeattleWeatherViz } from './vizzes';
 import { FlightsViz } from './vizzes/FlightsViz';
+import { FourSquareViz } from './vizzes/FourSquareViz';
+import { NYCRidesViz } from './vizzes/NYCRides';
 
 const vizMap: Record<string, Viz> = {
   'Mark Types': new MarkTypesViz(),
@@ -12,6 +14,8 @@ const vizMap: Record<string, Viz> = {
   'Flights 200K': new FlightsViz('flights_200k'),
   'Flights 10M': new FlightsViz('flights_10m'),
   'Gaia Star Catalog': new GaiaStarCatalogViz(),
+  'NYC Rides': new NYCRidesViz(),
+  'Foursquare Places': new FourSquareViz(),
 };
 const vizNames = Object.keys(vizMap);
 
