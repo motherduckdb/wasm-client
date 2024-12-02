@@ -51,7 +51,6 @@ export class NYCRidesViz implements Viz {
           vg.yAxis(null),
           vg.xDomain([975000, 1005000]),
           vg.yDomain([190000, 240000]),
-          vg.colorScale("symlog"),
           vg.colorScheme("blues")
         ),
         vg.hspace(10),
@@ -79,7 +78,6 @@ export class NYCRidesViz implements Viz {
           vg.yAxis(null),
           vg.xDomain([975000, 1005000]),
           vg.yDomain([190000, 240000]),
-          vg.colorScale("symlog"),
           vg.colorScheme("oranges")
         )
       ),

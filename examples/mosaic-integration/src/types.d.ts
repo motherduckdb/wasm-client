@@ -88,8 +88,10 @@ declare module '@uwdata/vgplot' {
     right: number;
     bottom: number;
   }): Directive;
+  function margin(value: number): Directive;
   function marginLeft(value: number): Directive;
   function marginTop(value: number): Directive;
+  function marginBottom(value: number): Directive;
   function marginRight(value: number): Directive;
   function width(value: number): Directive;
   
@@ -97,6 +99,7 @@ declare module '@uwdata/vgplot' {
   function xDomain(value: [number, number] | symbol): Directive;
   function xGrid(value: boolean): Directive;
   function xTickFormat(value: string): Directive;
+  function xLabel(value: string): Directive;
 
   function yAxis(value: 'left' | 'right' | null): Directive;
   function yDomain(value: [number, number] | symbol): Directive;
@@ -149,6 +152,7 @@ declare module '@uwdata/vgplot' {
   function hconcat(...elements: Element[]): Element;
   function vconcat(...elements: Element[]): Element;
   function hspace(...args: unknown): Element;
+  function vspace(...args: unknown): Element;
   function slider(...args: unknown[]): Element;
   
   // transforms
