@@ -82,7 +82,6 @@ export class FourSquareViz implements Viz {
           vg.yAxis(null),
           vg.xDomain([975000, 1005000]),
           vg.yDomain([190000, 240000]),
-          vg.colorScale("symlog"),
           vg.colorScheme("blues")
         ),
         vg.vspace(10),
