@@ -1,14 +1,14 @@
 import * as vg from '@uwdata/vgplot';
 import { Viz } from '../Viz';
 
-// Depends on the foursquare share. Attach this by running the following:
-// ATTACH 'md:_share/foursquare/9093b749-ff5b-4690-b699-73d388561e1f';
+// Depends on the mosaic_examples share. Attach this by running the following:
+// ATTACH 'md:_share/mosaic_examples/b01cfda8-239e-4148-a228-054b94cdc3b4';
 
 export class FourSquareViz implements Viz {
   async initialize() {
     await vg.coordinator().exec(`
     CREATE TEMP TABLE IF NOT EXISTS fsq_places AS
-      SELECT * FROM foursquare.main.fsq_places_by_year_nyc
+      SELECT * FROM mosaic_examples.main.fsq_places_by_year_nyc
       WHERE
         x > 900000
         AND x < 1100000
