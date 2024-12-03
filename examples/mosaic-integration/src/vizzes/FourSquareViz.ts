@@ -1,37 +1,14 @@
 import * as vg from '@uwdata/vgplot';
 import { Viz } from '../Viz';
 
+// Depends on the mosaic_examples share. Attach this by running the following:
+// ATTACH 'md:_share/mosaic_examples/b01cfda8-239e-4148-a228-054b94cdc3b4';
+
 export class FourSquareViz implements Viz {
   async initialize() {
-    await vg.coordinator().exec(`INSTALL spatial`);
-    await vg.coordinator().exec(`LOAD spatial`);
-    await vg.coordinator().exec(`
-    CREATE TABLE IF NOT EXISTS fsq_places_by_year_nyc AS
-      WITH dates_location AS
-        (
-          SELECT
-            date_created::TIMESTAMP AS date_created,
-            date_closed::TIMESTAMP AS date_closed,
-            ST_Transform(ST_Point(latitude, longitude), 'EPSG:4326', 'ESRI:102718') AS location,
-            list_any_value(fsq_category_labels) as label
-            FROM foursquare_places
-            WHERE locality='New York'
-        )
-        SELECT
-          YEAR(date_created) AS created,
-          YEAR(date_closed) AS closed,
-          ST_X(location) AS x,
-          ST_Y(location) AS y,
-          label,
-          level1_category_name,
-          level2_category_name
-        FROM dates_location dl
-        JOIN foursquare_categories cat
-        ON dl.label = cat.category_label
-    `);
     await vg.coordinator().exec(`
     CREATE TEMP TABLE IF NOT EXISTS fsq_places AS
-      SELECT * FROM fsq_places_by_year_nyc
+      SELECT * FROM mosaic_examples.main.fsq_places_by_year_nyc
       WHERE
         x > 900000
         AND x < 1100000
