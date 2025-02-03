@@ -22,14 +22,14 @@ export class FlightsViz implements Viz {
     const rawTable = `mosaic_examples.main.${this.flightsTableName}`;
     if (this.flightsTableName === 'flights_10m') {
       await vg.coordinator().exec(`
-      create temp view if not exists ${flights10MVizTableName} as
+      create table if not exists ${flights10MVizTableName} as
       select GREATEST(-60, LEAST(ARR_DELAY, 180))::DOUBLE AS delay, DISTANCE AS distance, DEP_TIME AS time
       from ${rawTable}
       `);
       this.vizTable = flights10MVizTableName;
     } else {
       await vg.coordinator().exec(`
-      create temp view if not exists ${flights200KVizTableName} as
+      create table if not exists ${flights200KVizTableName} as
       select *
       from ${rawTable}
       `);
