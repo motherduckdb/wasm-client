@@ -10,7 +10,9 @@ export class SeattleWeatherViz implements Viz {
     await vg
       .coordinator()
       .exec(
-        'CREATE TEMP TABLE IF NOT EXISTS weather AS SELECT * FROM mosaic_examples.main.seattle_weather'
+        `CREATE TEMP TABLE IF NOT EXISTS weather AS
+        SELECT datepart('doy', date) as doy, precipitation, temp_max, temp_min, wind, weather
+        FROM mosaic_examples.main.seattle_weather`
       );
   }
 
@@ -30,7 +32,7 @@ export class SeattleWeatherViz implements Viz {
       vg.hconcat(
         vg.plot(
           vg.dot(vg.from('weather', { filterBy: $click }), {
-            x: vg.dateMonthDay('date'),
+            x: 'doy',
             y: 'temp_max',
             fill: 'weather',
             r: 'precipitation',
@@ -43,7 +45,6 @@ export class SeattleWeatherViz implements Viz {
           vg.highlight({ by: $range, fill: '#ccc', fillOpacity: 0.2 }),
           vg.colorLegend({ as: $click, columns: 1 }),
           vg.xyDomain(vg.Fixed),
-          vg.xTickFormat('%b'),
           vg.colorDomain($domain),
           vg.colorRange($colors),
           vg.rDomain(vg.Fixed),

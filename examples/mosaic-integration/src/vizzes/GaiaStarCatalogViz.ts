@@ -10,7 +10,7 @@ export class GaiaStarCatalogViz implements Viz {
       `CREATE TEMP VIEW IF NOT EXISTS gaia_viz AS -- compute u and v with natural earth projection
       WITH prep AS (
         SELECT
-          radians((-l + 540) % 360 - 180) AS lambda,
+          radians((-l + 540) % 360 - 180) AS lambda_,
           radians(b) AS phi,
           asin(sqrt(3)/2 * sin(phi)) AS t,
           t^2 AS t2,
@@ -19,7 +19,7 @@ export class GaiaStarCatalogViz implements Viz {
         FROM mosaic_examples.main.gaia_5m
       )
       SELECT
-        (1.340264 * lambda * cos(t)) / (sqrt(3)/2 * (1.340264 + (-0.081106 * 3 * t2) + (t6 * (0.000893 * 7 + 0.003796 * 9 * t2)))) AS u,
+        (1.340264 * lambda_ * cos(t)) / (sqrt(3)/2 * (1.340264 + (-0.081106 * 3 * t2) + (t6 * (0.000893 * 7 + 0.003796 * 9 * t2)))) AS u,
         t * (1.340264 + (-0.081106 * t2) + (t6 * (0.000893 + 0.003796 * t2))) AS v,
         * EXCLUDE('t', 't2', 't6')
       FROM prep
