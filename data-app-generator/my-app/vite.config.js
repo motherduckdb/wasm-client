@@ -9,12 +9,6 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
-  server: {
-    headers: {
-      'Cross-Origin-Opener-Policy': 'same-origin',
-      'Cross-Origin-Embedder-Policy': 'require-corp'
-    }
-  },
   define: {
     'import.meta.env.VITE_MOTHERDUCK_TOKEN': JSON.stringify(process.env.motherduck_token)
   }

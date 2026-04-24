@@ -7,11 +7,5 @@ export default defineConfig({
     // Ensures asset URLs are relative from index.html
     renderBuiltUrl: (filename) => filename
   },
-  plugins: [react()],
-  server: {
-    headers: {
-      "Cross-Origin-Embedder-Policy": "require-corp",
-      "Cross-Origin-Opener-Policy": "same-origin",
-    }
-  }
+  plugins: [react()]
 })
