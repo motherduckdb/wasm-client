@@ -20,6 +20,7 @@ export function mdConnector(token: string): Connector {
     query: async (query: Query) => {
       const { sql, type } = query;
       const result = await connection.evaluateStreamingQuery(sql);
+      console.log(sql);
       switch (type) {
         case 'arrow':
           return arrowTableFromResult(result);
